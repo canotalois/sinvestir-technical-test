@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+/* Explicit source detection — Tailwind v4 auto-detection does not correctly
+   scan the .tsx files in this pnpm monorepo. Covers the app + the
+   crypto-simulator package (which will also move to Tailwind classes on reskin). */
+@source "../**/*.{ts,tsx}";
+@source "../../../packages/crypto-simulator/src/**/*.{ts,tsx}";
+
+/* ---------------------------------------------------------------------------
+   Tailwind v4 theme mirrored 1:1 from `entry.css` of simulateurs.sinvestir.fr.
+   These tokens let us reuse their classes verbatim from the dump:
+   `bg-blue-sky`, `text-blue-light`, `text-blue-night`, `bg-yellow`, etc.
+   Values captured from their compiled CSS (resolving the custom utilities).
+--------------------------------------------------------------------------- */
+@theme {
+  /* Accents (captured: `.text-blue-sky{color:#1098f7}` …) */
+  --color-blue-sky: #1098f7; /* accent / focus / CTA highlight */
+  --color-blue-light: #7899ce; /* secondary text, input underline */
+  --color-blue-night: #00173f; /* = surface-elevated */
+  --color-yellow: #f8d047; /* S'investir gold: series, bars, logo */
+
+  /* Surfaces (captured: `--color-surface:8 12 22` …) */
+  --color-surface: #080c16;
+  --color-surface-soft: #0f172a;
+  --color-surface-elevated: #00173f;
+  --color-app: #0b0f1a; /* content fill `bg-[#0B0F1A]` */
+
+  /* Royal blue area for charts + the background glow */
+  --color-chart-area: #2945a8;
+
+  /* Perf semantics + CTA pill gradient (captured on S'investir) */
+  --color-positive: #22c55e;
+  --color-negative: #ef4444;
+  --color-grad-from: #0049c6;
+  --color-grad-to: #04265f;
+
+  /* Modal background (dark navy, captured on the S'investir share modal) */
+  --color-modal: #0f1a2c;
+
+  /* Glass card radius (20px) */
+  --radius-card: 20px;
+
+  /* Typography: Lexend provided by next/font (`--font-lexend`), Lexend fallback. */
+  --font-sans:
+    var(--font-lexend), "Lexend", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* Glassmorphism (captured: `--blur:12px`) */
+  --blur: 12px;
+}
+
+/* ---------------------------------------------------------------------------
+   Base. Tailwind preflight handles reset/box-sizing/margins.
+   The deep base (diagonal gradient `min-h-dvh`) is set on <html>;
+   the #0B0F1A fill and SVG glow are handled in the Shell (see their stacking).
+--------------------------------------------------------------------------- */
+:root {
+  color-scheme: dark;
+}
+
+/* Tailwind v4 no longer sets `cursor: pointer` on buttons by default — restore it. */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+html {
+  /* Outer wrapper `bg-[linear-gradient(126.82deg,_#000519_28.59%,_#000000_100%)]` */
+  background: linear-gradient(126.82deg, #000519 28.59%, #000000) no-repeat
+    fixed;
+}
+
+body {
+  min-height: 100vh;
+  color: #fff;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* react-day-picker mirrors the native <select> focus ring onto the month/year
+   caption label, which lingers as an ugly border after closing the dropdown.
+   Drop it (the dropdowns stay keyboard-accessible as native selects). */
+.rdp-dropdown:focus-visible ~ .rdp-caption_label {
+  outline: none;
+}
+
+/* Keep day cells the exact same size/weight whether selected or not, so
+   growing/shrinking a range doesn't make the days flicker and resize. */
+.rdp-selected {
+  font-weight: inherit;
+  font-size: inherit;
+}
+
+/* On-brand (not white) keyboard focus ring on day cells; no flicker on click. */
+.rdp-day_button:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--rdp-accent-color);
+}
