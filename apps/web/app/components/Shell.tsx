@@ -111,9 +111,22 @@ const GiftIcon = () => (
   </svg>
 );
 const GearIcon = () => (
-  <svg {...icon}>
-    <circle cx="12" cy="12" r="3" />
-    <path d="M19.4 13a7.8 7.8 0 0 0 0-2l2-1.5-2-3.4-2.3 1a7.6 7.6 0 0 0-1.7-1l-.3-2.6h-4l-.3 2.6a7.6 7.6 0 0 0-1.7 1l-2.3-1-2 3.4L4.6 11a7.8 7.8 0 0 0 0 2l-2 1.5 2 3.4 2.3-1a7.6 7.6 0 0 0 1.7 1l.3 2.6h4l.3-2.6a7.6 7.6 0 0 0 1.7-1l2.3 1 2-3.4Z" />
+  <svg
+    viewBox="0 0 24 25"
+    fill="none"
+    stroke="currentColor"
+    aria-hidden="true"
+    className="h-4 w-4 shrink-0 transition-transform duration-[400ms] group-hover:rotate-180"
+  >
+    <path
+      d="M15.4998 12.5093C15.4998 14.4423 13.9328 16.0093 11.9998 16.0093C10.0668 16.0093 8.49982 14.4423 8.49982 12.5093C8.49982 10.5763 10.0668 9.00928 11.9998 9.00928C13.9328 9.00928 15.4998 10.5763 15.4998 12.5093Z"
+      strokeWidth={1.5}
+    />
+    <path
+      d="M21.011 14.6051C21.5329 14.4643 21.7939 14.3939 21.8969 14.2594C22 14.1248 22 13.9083 22 13.4754V11.5418C22 11.1088 22 10.8924 21.8969 10.7578C21.7938 10.6233 21.5329 10.5529 21.011 10.4121C19.0606 9.88613 17.8399 7.84706 18.3433 5.90942C18.4817 5.37654 18.5509 5.1101 18.4848 4.95383C18.4187 4.79757 18.2291 4.68988 17.8497 4.47451L16.125 3.49528C15.7528 3.28393 15.5667 3.17826 15.3997 3.20076C15.2326 3.22327 15.0442 3.41127 14.6672 3.78728C13.208 5.24303 10.7936 5.24297 9.33434 3.78719C8.95743 3.41118 8.76898 3.22317 8.60193 3.20067C8.43489 3.17816 8.24877 3.28384 7.87653 3.49518L6.15184 4.47441C5.77253 4.68977 5.58287 4.79745 5.51678 4.9537C5.45068 5.10995 5.51987 5.37641 5.65825 5.90934C6.16137 7.84704 4.93972 9.88617 2.98902 10.4121C2.46712 10.5529 2.20617 10.6232 2.10308 10.7578C2 10.8923 2 11.1088 2 11.5418V13.4754C2 13.9083 2 14.1248 2.10308 14.2594C2.20615 14.3939 2.46711 14.4643 2.98902 14.6051C4.93939 15.1311 6.16008 17.1701 5.65672 19.1078C5.51829 19.6406 5.44907 19.9071 5.51516 20.0633C5.58126 20.2196 5.77092 20.3273 6.15025 20.5427L7.87495 21.5219C8.24721 21.7333 8.43334 21.8389 8.6004 21.8164C8.76746 21.7939 8.95588 21.6059 9.33271 21.2299C10.7927 19.7729 13.2088 19.7729 14.6689 21.2298C15.0457 21.6058 15.2341 21.7938 15.4012 21.8163C15.5682 21.8388 15.7544 21.7332 16.1266 21.5218L17.8513 20.5426C18.2307 20.3272 18.4204 20.2195 18.4864 20.0632C18.5525 19.9069 18.4833 19.6405 18.3448 19.1077C17.8412 17.1701 19.0609 15.1311 21.011 14.6051Z"
+      strokeWidth={1.5}
+      strokeLinecap="round"
+    />
   </svg>
 );
 const BulbIcon = () => (
@@ -199,18 +212,7 @@ function SidebarInner({
   }`;
 
   return (
-    <>
-      {onCollapse !== undefined ? (
-        <button
-          type="button"
-          onClick={onCollapse}
-          aria-label={collapsed ? "Déplier le menu" : "Réduire le menu"}
-          className="absolute -right-0 top-1/2 z-10 flex h-16 w-6 -translate-y-1/2 items-center justify-center rounded-r-2xl bg-white/5 transition-all duration-[400ms] hover:bg-white/10"
-        >
-          <ChevronLeftIcon flipped={collapsed} />
-        </button>
-      ) : null}
-
+    <div className="relative flex grow flex-col">
       <div
         className="relative flex grow flex-col gap-y-10 overflow-y-auto overflow-x-hidden rounded-2xl border border-white/10 px-0 py-6"
         style={{
@@ -311,7 +313,18 @@ function SidebarInner({
           </ul>
         </nav>
       </div>
-    </>
+
+      {onCollapse !== undefined ? (
+        <button
+          type="button"
+          onClick={onCollapse}
+          aria-label={collapsed ? "Déplier le menu" : "Réduire le menu"}
+          className="absolute right-0 top-1/2 z-20 flex h-16 w-6 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-xl border border-white/10 bg-app transition-colors duration-[400ms] hover:bg-white/10"
+        >
+          <ChevronLeftIcon flipped={collapsed} />
+        </button>
+      ) : null}
+    </div>
   );
 }
 
