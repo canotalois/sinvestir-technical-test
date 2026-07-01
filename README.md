@@ -6,6 +6,11 @@ Transposition du **simulateur crypto (DCA / plus-value)** de S'investir au **des
 - 🧩 **Embed** : [`/embed`](https://sinvestir.canot.dev/embed) (le simulateur seul, sans habillage)
 - 📄 Contexte & rétro-ingénierie de la source : [`CONTEXTE-RAPPORT.md`](./CONTEXTE-RAPPORT.md)
 
+> **Rendu — les deux volets demandés sont traités ici :**
+>
+> 1. **Choix techniques / partis pris** (+ justification hors-stack) → section **[Choix techniques & partis pris](#choix-techniques--partis-pris)**.
+> 2. **Suggestions d'amélioration pour S'investir** → section **[Suggestions pour S'investir](#suggestions-damélioration-pour-sinvestir)** (synthèse), et le backlog détaillé **[`IMPROVEMENTS.md`](./IMPROVEMENTS.md)**.
+
 Sur un même scénario (Bitcoin, 25 €/semaine depuis le 01/01/2018), le simulateur reproduit fidèlement la source : **Investi 11 100 €, Acquis ~0,794 ₿, PRU ~13 970 €, Capital final ~41 850 €, Performance ~+277 %**.
 
 ---
@@ -49,7 +54,9 @@ apps/
 
 ---
 
-## Partis pris techniques
+## Choix techniques & partis pris
+
+> **Q1 du rendu** — le raisonnement derrière chaque décision, dont la justification du choix hors-stack (Next.js).
 
 **Next.js plutôt que Nuxt.** La suite existante `simulateurs.sinvestir.fr` est en **Nuxt 3** — mais l'énoncé annonce la stack interne **Next.js + Vercel**. J'ai choisi **Next.js** pour coller à cette stack cible, tout en **répliquant fidèlement le design system** existant (tokens couleurs, Lexend, glassmorphism, relevés 1:1). _Choix assumé et signalé : si l'objectif était la réutilisation directe des composants Nuxt, on partirait sur Nuxt._
 
@@ -157,6 +164,29 @@ docker compose --env-file deploy/.env -f deploy/docker-compose.yml up -d --build
 ```
 
 **Alternative Vercel** (le code est prêt) : importer le repo — monorepo pnpm détecté, build `pnpm build`, output `apps/web`. Définir au besoin `CRYPTO_DATA_PROVIDER` / `COINGECKO_API_KEY` / `NEXT_PUBLIC_POSTHOG_KEY`.
+
+---
+
+## Suggestions d'amélioration pour S'investir
+
+> **Q2 du rendu** — regard de partenaire, au-delà de ce POC. Backlog technique détaillé dans [`IMPROVEMENTS.md`](./IMPROVEMENTS.md).
+
+**Stratégique**
+
+- **Ré-internaliser le simulateur crypto.** L'actuel sur `sinvestir.fr` est un **widget tiers Fritzy** en iframe : hors charte, et surtout hors contrôle (données, SEO, tracking, UX). Ce POC prouve qu'on peut le reprendre en interne — charte 1:1, data maîtrisée, analytics first-party — comme 9ᵉ simulateur de la suite.
+- **Combler le trou SEO `/les-simulateurs/crypto`** (aujourd'hui **404**). « Simulateur crypto » est un fort volume de recherche : une page maison **SSR + OpenGraph** capte ce trafic que l'iframe tierce ne référence pas.
+
+**Produit / pédagogie**
+
+- **DCA vs achat unique en surimpression** sur la même période — le message pédagogique le plus fort sur l'intérêt du DCA.
+- **Pédagogie du risque crypto** : drawdown max sur la période, PRU vs prix actuel, sensibilité au timing (« et si vous aviez commencé X mois plus tôt/tard ? »).
+- **Enregistrer / Partager** branchés sur les comptes de la suite (Supabase) — rétention et acquisition.
+
+**Fiabilité / industrialisation**
+
+- **Provider de données payant fiable** en production (CoinMarketCap / CoinGecko Analyst) : l'abstraction `PriceProvider` est déjà en place — un fichier + une variable d'env suffisent (cf. [Source de données](#source-de-données)).
+- **Embed officiel** (Web Component) pour diffuser le simulateur depuis `sinvestir.fr` sans dépendance à l'hôte.
+- **i18n FR/EN** + passe accessibilité (la source Fritzy est bilingue).
 
 ---
 

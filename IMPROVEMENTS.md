@@ -4,7 +4,7 @@ Périmètre **volontairement écarté de la phase 1** (reproduction fidèle). Tr
 
 ## Produit / UX
 
-- [ ] **Vue « Calendrier »** (toggle Graphiques | Calendrier, comme la suite S'investir) : table année/mois des versements cumulés, unités acquises et valeur.
+- [x] **Vue « Calendrier »** (livré) : table année/mois des versements cumulés, unités acquises et valeur.
 - [ ] **DCA vs achat unique en surimpression** : comparer les deux stratégies sur la même période (message pédagogique fort).
 - [ ] **Sensibilité au timing** : « et si vous aviez commencé X mois plus tôt/tard ? » en un clic.
 - [ ] **PRU vs prix actuel** (badge) + **drawdown max** sur la période (pédagogie du risque crypto).
@@ -14,9 +14,9 @@ Périmètre **volontairement écarté de la phase 1** (reproduction fidèle). Tr
 
 ## Graphique
 
-- [ ] **Sélecteur de type de graphique** (ligne / barres / donut) comme la suite.
-- [ ] **Raffiner le double-axe** : toggle pour masquer/afficher la série « Acquis » (unités) ; bascule unités/€.
-- [ ] Légende interactive + tooltips enrichis (variation %, date exacte).
+- [x] **Sélecteur de type de graphique** (livré : Courbe / Aire / Barres / Donut).
+- [x] **Double-axe + séries désactivables** via la légende (livré) ; reste : bascule unités/€.
+- [x] **Légende interactive** (livré) ; reste : tooltips enrichis (variation %, date exacte).
 
 ## Données / fiabilité
 

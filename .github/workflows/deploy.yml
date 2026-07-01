@@ -8,6 +8,9 @@ name: Deploy production
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "**/*.md"
+      - ".gitignore"
   workflow_dispatch:
 
 concurrency:
