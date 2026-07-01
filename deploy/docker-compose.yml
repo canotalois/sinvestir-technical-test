@@ -1,0 +1,22 @@
+# Standalone deployment of the S'investir simulator demo app.
+# Runs on a dedicated network with NO published host port — the shared Caddy
+# ingress reaches it by container name over `sinvestir-net`. See deploy/README.md.
+name: sinvestir-simulateur
+
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_POSTHOG_KEY: ${NEXT_PUBLIC_POSTHOG_KEY}
+        NEXT_PUBLIC_POSTHOG_HOST: ${NEXT_PUBLIC_POSTHOG_HOST:-https://eu.i.posthog.com}
+    image: sinvestir-simulateur
+    container_name: sinvestir-simulateur
+    restart: unless-stopped
+    networks:
+      - sinvestir-net
+
+networks:
+  sinvestir-net:
+    name: sinvestir-net
