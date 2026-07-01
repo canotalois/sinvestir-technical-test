@@ -1,0 +1,21 @@
+{
+  "name": "@sinvestir/tokens",
+  "version": "0.1.0",
+  "description": "Design tokens de la suite simulateurs.sinvestir.fr — valeurs TS (couleurs concrètes pour Chart.js & canvas).",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "build": "exit 0",
+    "typecheck": "tsc --noEmit",
+    "lint": "exit 0",
+    "test": "exit 0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}
