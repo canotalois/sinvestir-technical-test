@@ -45,4 +45,9 @@
 
 ### 8. Conclusion (10 s)
 
-- Lien démo Vercel + repo. Remercier.
+- Lien démo (**https://sinvestir.canot.dev**) + repo. Remercier.
+
+> **Bonus si le temps le permet** (posture senior) : mentionner que la démo est
+> déployée sur un VPS derrière Caddy avec **CI/CD GitHub Actions** (push `main`
+> → build Docker + déploiement + smoke test), sans toucher aux autres projets en
+> prod sur la machine. Montrer aussi la **sidebar repliable** (languette).

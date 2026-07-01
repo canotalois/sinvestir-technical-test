@@ -2,8 +2,8 @@
 
 Transposition du **simulateur crypto (DCA / plus-value)** de S'investir au **design system de la suite `simulateurs.sinvestir.fr`**, livrée comme un **composant React autonome et embarquable**.
 
-- 🎯 **Démo en ligne** : _<À DÉPLOYER — voir « Déploiement »>_
-- 🧩 **Embed** : `/embed` (le simulateur seul, sans habillage)
+- 🎯 **Démo en ligne** : **https://sinvestir.canot.dev**
+- 🧩 **Embed** : [`/embed`](https://sinvestir.canot.dev/embed) (le simulateur seul, sans habillage)
 - 📄 Contexte & rétro-ingénierie de la source : [`CONTEXTE-RAPPORT.md`](./CONTEXTE-RAPPORT.md)
 
 Sur un même scénario (Bitcoin, 25 €/semaine depuis le 01/01/2018), le simulateur reproduit fidèlement la source : **Investi 11 100 €, Acquis ~0,794 ₿, PRU ~13 970 €, Capital final ~41 850 €, Performance ~+277 %**.
@@ -123,7 +123,7 @@ Copier `apps/web/.env.example` → `apps/web/.env.local` et renseigner la clé.
 
 ```html
 <iframe
-  src="https://<votre-demo>.vercel.app/embed"
+  src="https://sinvestir.canot.dev/embed"
   width="100%"
   height="900"
   loading="lazy"
@@ -148,11 +148,15 @@ L'hôte fournit les routes `/api/coins` et `/api/coins/[id]/history` (incluses d
 
 ---
 
-## Déploiement (Vercel)
+## Déploiement
 
-1. Pousser le repo sur GitHub.
-2. Importer le projet sur Vercel — monorepo pnpm détecté. Build : `pnpm build`, output : `apps/web`.
-3. (Optionnel) définir `CRYPTO_DATA_PROVIDER` / `COINGECKO_API_KEY` / `NEXT_PUBLIC_POSTHOG_KEY`.
+La démo ([sinvestir.canot.dev](https://sinvestir.canot.dev)) tourne sur un **VPS** derrière **Caddy** (reverse proxy, TLS Let's Encrypt automatique), packagée en image **Docker Next.js `standalone`**, avec **CI/CD GitHub Actions** : chaque push sur `main` déclenche rsync des sources → `docker compose up -d --build` → smoke test HTTPS. Cf. [`deploy/`](./deploy) et [`.github/workflows/deploy.yml`](./.github/workflows/deploy.yml).
+
+```bash
+docker compose --env-file deploy/.env -f deploy/docker-compose.yml up -d --build
+```
+
+**Alternative Vercel** (le code est prêt) : importer le repo — monorepo pnpm détecté, build `pnpm build`, output `apps/web`. Définir au besoin `CRYPTO_DATA_PROVIDER` / `COINGECKO_API_KEY` / `NEXT_PUBLIC_POSTHOG_KEY`.
 
 ---
 

@@ -148,10 +148,16 @@ const MenuIcon = () => (
 );
 const ChevronLeftIcon = ({ flipped }: { flipped: boolean }) => (
   <svg
-    {...icon}
-    className={`relative left-0.5 h-5 w-5 shrink-0 transition-transform duration-300 ${flipped ? "rotate-180" : ""}`}
+    viewBox="0 0 24 25"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={1.5}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    className={`relative -left-0.5 h-5 w-5 shrink-0 transition-transform duration-300 ${flipped ? "rotate-180" : ""}`}
   >
-    <path d="m15 6-6 6 6 6" />
+    <path d="M15 6.50854C15 6.50854 9.00001 10.9275 9 12.5086C8.99999 14.0897 15 18.5085 15 18.5085" />
   </svg>
 );
 
@@ -319,7 +325,7 @@ function SidebarInner({
           type="button"
           onClick={onCollapse}
           aria-label={collapsed ? "Déplier le menu" : "Réduire le menu"}
-          className="absolute left-full top-1/2 z-20 flex h-16 w-7 -translate-y-1/2 items-center justify-center rounded-r-3xl border border-l-0 border-white/10 bg-white/5 backdrop-blur-sm transition-colors duration-[400ms] hover:bg-white/10"
+          className="absolute -right-0 top-1/2 z-20 flex h-16 w-6 -translate-y-1/2 items-center justify-center rounded-r-2xl bg-white/5 transition-all duration-[400ms] hover:bg-white/10"
         >
           <ChevronLeftIcon flipped={collapsed} />
         </button>
