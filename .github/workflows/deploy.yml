@@ -1,0 +1,61 @@
+name: Deploy production
+
+# Déploiement continu vers le VPS (derrière le reverse proxy Caddy).
+# Déclenché à chaque push sur `main`, ou manuellement (workflow_dispatch).
+# Secret requis : VPS_SSH_KEY = clé privée SSH dont la publique est dans
+# ~/.ssh/authorized_keys du user `deploy` sur le VPS.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+env:
+  VPS_HOST: 141.227.139.191
+  VPS_USER: deploy
+  VPS_PATH: /home/deploy/sinvestir-simulateur
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+      - name: Sync sources to VPS
+        run: |
+          rsync -az --delete \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude 'node_modules' \
+            --exclude '.next' \
+            --exclude '.env' \
+            --exclude '.env.local' \
+            --exclude '.env.*.local' \
+            --exclude '*.tsbuildinfo' \
+            --exclude 'coverage' \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new" \
+            ./ "$VPS_USER@$VPS_HOST:$VPS_PATH/"
+
+      - name: Build & restart container
+        run: |
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new \
+            "$VPS_USER@$VPS_HOST" \
+            "cd $VPS_PATH && docker compose --env-file deploy/.env -f deploy/docker-compose.yml up -d --build && docker image prune -f"
+
+      - name: Smoke test
+        run: |
+          sleep 5
+          code=$(curl -sS -o /dev/null -w '%{http_code}' https://sinvestir.canot.dev/)
+          echo "https://sinvestir.canot.dev/ → HTTP $code"
+          test "$code" = "200"
