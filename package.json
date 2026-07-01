@@ -1,0 +1,25 @@
+{
+  "name": "sinvestir-crypto-simulator",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Simulateur crypto (DCA) transposé au design system S'investir — monorepo de démo (test technique).",
+  "type": "module",
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9"
+  },
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "dev": "pnpm --filter @sinvestir/web dev",
+    "build": "pnpm --filter @sinvestir/web build",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "format": "prettier --write \"**/*.{ts,tsx,css,md,json}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,css,md,json}\""
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.3"
+  }
+}
