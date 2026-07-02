@@ -25,10 +25,10 @@ Sur le scénario par défaut (Bitcoin, 25 €/semaine depuis le 01/01/2018), le 
 
 Revue de l'existant (`sinvestir.fr` et `simulateurs.sinvestir.fr`) :
 
-- **SEO** : suite rendue côté client (`data-ssr="false"`, HTML quasi vide, 0 JSON-LD), contenu invisible pour Google → passer en SSR + données structurées ; corriger le soft-404 sur `/les-simulateurs/crypto`.
+- **SEO** : suite rendue côté client (`data-ssr="false"`, HTML quasi vide, 0 JSON-LD), contenu invisible pour Google → passer en SSR + données structurées.
 - **SEO-LLM / GEO** : le site principal bloque les crawlers IA (GPTBot, ClaudeBot, Google-Extended) dans son `robots.txt`, donc absent de ChatGPT/Claude/Perplexity → réévaluer pour être cité sur les requêtes finance.
 - **Sécurité** : Supabase appelé en direct depuis le client (clé anon publique), sécurité portée par les seules policies RLS → auditer RLS ; ajouter les headers de sécurité manquants sur la suite.
-- **Performance** : pages WordPress lourdes (~800 Ko + ~75 scripts), suite sans SSR (écran blanc avant le JS) → alléger les assets + SSR.
+- **Performance** : pages WordPress lourdes (~800 Ko + ~75 scripts) → alléger les images et les scripts.
 - **UX** : page 404 sans habillage, copy « + de 7 000 cryptomonnaies » inexacte (~100 réels) → habiller la 404, corriger la copy.
 - **Produit** (selon la vision produit) : DCA vs achat unique, indicateur de risque (drawdown), light mode.
 

@@ -67,6 +67,7 @@ export function YearBarChart({ series }: { series: readonly SeriesPoint[] }) {
       },
       plugins: {
         legend: {
+          position: "bottom",
           labels: { color: color.text, usePointStyle: true, boxHeight: 6 },
         },
         tooltip: {

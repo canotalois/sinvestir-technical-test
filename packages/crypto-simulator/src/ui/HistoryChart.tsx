@@ -166,6 +166,7 @@ export function HistoryChart({
       },
       plugins: {
         legend: {
+          position: "bottom",
           labels: { color: color.text, usePointStyle: true, boxHeight: 6 },
         },
         tooltip: {

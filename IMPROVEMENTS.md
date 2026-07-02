@@ -5,12 +5,10 @@ Revue d'optimisation de l'existant (`sinvestir.fr` et `simulateurs.sinvestir.fr`
 ## SEO
 
 - **Suite rendue côté client** (`data-ssr="false"`, HTML initial ~4 Ko, aucun JSON-LD), contenu quasi invisible pour un crawler → SSR/prerender (natif Nuxt) + données structurées (`SoftwareApplication`, `FAQPage`).
-- **Soft-404 sur `/les-simulateurs/crypto`** (HTTP 200 renvoyant une page « 404 » client) → servir un vrai statut 404, ou la page.
 
 ## SEO-LLM / GEO
 
 - **Le site principal bloque les crawlers IA** dans son `robots.txt` (GPTBot, ClaudeBot, Google-Extended, Applebot-Extended, CCBot, Bytespider, meta-externalagent), donc absent de ChatGPT/Claude/Perplexity et des AI Overviews → réévaluer ce blocage pour être cité sur les requêtes finance.
-- **Aucun contenu citable côté suite** (SPA vide, pas de JSON-LD, pas de `llms.txt` réel) → le SSR et les données structurées rendent les simulateurs référençables et citables.
 
 ## Sécurité
 
@@ -20,7 +18,6 @@ Revue d'optimisation de l'existant (`sinvestir.fr` et `simulateurs.sinvestir.fr`
 ## Performance
 
 - **`sinvestir.fr` lourd** : accueil ~800 Ko de HTML + ~75 scripts, page crypto ~560 Ko → optimiser les images, lazy-load, réduire les scripts.
-- **Suite sans SSR** : écran blanc avant le chargement du JS → le SSR améliore aussi la performance perçue.
 
 ## UX / UI
 
