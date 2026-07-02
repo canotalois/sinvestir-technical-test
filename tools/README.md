@@ -1,4 +1,4 @@
-# Outils de relevé CSS — S'investir
+# Outils de relevé CSS pour S'investir
 
 Reproduire le design system de `simulateurs.sinvestir.fr` **au pixel près**, sans
 deviner : on relève les styles **réels** depuis le site en production.
@@ -6,7 +6,7 @@ deviner : on relève les styles **réels** depuis le site en production.
 ## `scrape-css.js`
 
 Snippet à coller dans la console DevTools (la page S'investir exige une session
-connectée — c'est pour ça qu'on passe par le navigateur plutôt qu'un scraper
+connectée, c'est pour ça qu'on passe par le navigateur plutôt qu'un scraper
 Node headless, qui n'aurait pas le cookie de session).
 
 ### Utilisation

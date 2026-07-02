@@ -1,10 +1,10 @@
-# GUIDELINES.md - Simulateur crypto S'investir
+# Guidelines : Simulateur crypto S'investir
 
 Checklist courte. Chaque ligne `❌` est un **don't** = bloquant. Si tu te surprends à le faire, stoppe et reconsidère avant de commit.
 
 En cas de doute : **throw early, type strictly, trust the layer below.** Pas de code défensif pour des cas que la couche d'en dessous a promis de ne pas produire.
 
-> Adapté des guidelines frontend Kaffa au périmètre de ce projet (composant simulateur réutilisable, Next.js + monorepo pnpm). Le skill `/review` (`.claude/skills/review`) vérifie cette branche contre ce fichier en mode strict.
+> Adapté de mes guidelines frontend au périmètre de ce projet (composant simulateur réutilisable, Next.js + monorepo pnpm). Le skill `/review` (`.claude/skills/review`) vérifie cette branche contre ce fichier en mode strict.
 
 ## TypeScript
 
@@ -14,7 +14,7 @@ En cas de doute : **throw early, type strictly, trust the layer below.** Pas de 
 - ❌ Pas de `!` (non-null assertion) hors `array[0]!` garanti par une longueur/regex. Si tu as besoin de `!`, écris un guard.
 - ❌ Pas du même état domaine encodé dans 2+ booléens (`isLoading` + `hasData` + `error`). Union discriminée avec un champ `status`.
 - ❌ Ne désactive pas `strict` ni `noUncheckedIndexedAccess`. Ils sont ON. Ils restent ON.
-- ✅ Les types wire-format vivent dans **un** fichier par boundary (`data/coingecko.ts`). L'API CoinGecko renvoie du `snake_case` → on le valide et on le **mappe une seule fois** vers nos types camelCase.
+- ✅ Les types wire-format vivent dans **un** fichier par boundary (`data/contracts.ts`). L'API CoinGecko renvoie du `snake_case` → on le valide et on le **mappe une seule fois** vers nos types camelCase.
 
 ## Nullish & fallbacks (`??`, `||`, `?.`)
 
@@ -44,7 +44,7 @@ En cas de doute : **throw early, type strictly, trust the layer below.** Pas de 
 ## Network & contracts
 
 - ❌ Pas d'acceptation de plusieurs shapes "au cas où". Le contrat est le contrat.
-- ❌ Pas de chemins `/api/...` en dur dans les composants/hooks. Centralise dans `data/coingecko.ts`.
+- ❌ Pas de chemins `/api/...` en dur dans les composants/hooks. Centralise dans `data/client.ts`.
 - ✅ Valide la shape de réponse **au boundary** avec zod. Throw `ContractError` sur mismatch (visibilité > acceptation silencieuse).
 - ✅ Les env vars requises throw au chargement du module, pas de fallback silencieux vers `''`.
 - ✅ **Exception assumée à la règle "frontend → backend direct"** : on proxie CoinGecko via une route API Next **avec cache** (`revalidate`). Justification : rate-limit de l'API publique → la démo ne doit pas casser. C'est le seul proxy autorisé, et il est documenté dans le README.

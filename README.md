@@ -1,4 +1,4 @@
-# Simulateur crypto - au format S'investir
+# Simulateur crypto au format S'investir
 
 Simulateur d'investissement crypto (DCA / plus-value), transposé au **design system de la suite `simulateurs.sinvestir.fr`** et livré comme **composant React autonome et embarquable**.
 
@@ -10,6 +10,13 @@ Simulateur d'investissement crypto (DCA / plus-value), transposé au **design sy
 - **Le parti pris** : en voyant que le design system de la suite était accessible, j'ai poussé jusqu'au **clone 1:1** de l'interface S'investir (100 % identique) pour tester jusqu'où l'IA permet aujourd'hui une réplication fidèle et rapide. J'en ai profité pour corriger quelques bugs repérés sur l'original.
 
 Sur le scénario par défaut (Bitcoin, 25 €/semaine depuis le 01/01/2018), le simulateur reproduit fidèlement la source : **Investi 11 100 €, Acquis ~0,794 ₿, PRU ~13 970 €, Capital final ~41 850 €, Performance ~+277 %**.
+
+**Ce que le composant apporte vs le widget Fritzy actuel :**
+
+- **Graphique lisible** : double-axe + 4 vues (courbe / aire / barres / donut) + légende masquable, là où la source écrase 4 séries sur un seul axe.
+- **Chargement optimisé** : cache de la requête d'historique (route API Next), skeletons retardés (pas de flash), données triées (pas de glitch de courbe).
+- **Robustesse** : zéro layout shift, never-crash (parsers tolérants + `ErrorBoundary`).
+- **Intégrable proprement** : composant autonome, `/embed`, peu de dépendances.
 
 ---
 
@@ -25,12 +32,12 @@ Sur le scénario par défaut (Bitcoin, 25 €/semaine depuis le 01/01/2018), le 
 
 Revue de l'existant (`sinvestir.fr` et `simulateurs.sinvestir.fr`) :
 
-- **SEO** : suite rendue côté client (`data-ssr="false"`, HTML quasi vide, 0 JSON-LD), contenu invisible pour Google → passer en SSR + données structurées.
-- **SEO-LLM / GEO** : le site principal bloque les crawlers IA (GPTBot, ClaudeBot, Google-Extended) dans son `robots.txt`, donc absent de ChatGPT/Claude/Perplexity → réévaluer pour être cité sur les requêtes finance.
-- **Sécurité** : Supabase appelé en direct depuis le client (clé anon publique), sécurité portée par les seules policies RLS → auditer RLS ; ajouter les headers de sécurité manquants sur la suite.
-- **Performance** : pages WordPress lourdes (~800 Ko + ~75 scripts) → alléger les images et les scripts.
-- **UX** : page 404 sans habillage, copy « + de 7 000 cryptomonnaies » inexacte (~100 réels) → habiller la 404, corriger la copy.
-- **Produit** (selon la vision produit) : DCA vs achat unique, indicateur de risque (drawdown), light mode.
+- **SEO** : la suite est rendue côté client (SPA, sitemap vide, 0 JSON-LD), les pages ne captent pas le SEO → rendu serveur (SSR/SSG, natif avec Next.js) + données structurées.
+- **SEO-LLM / GEO** : le site principal bloque les crawlers IA (GPTBot, ClaudeBot, Google-Extended…) dans son `robots.txt`, donc non citable dans ChatGPT/Claude/Perplexity → débloquer + données structurées pour être cité.
+- **Sécurité** : inscription sans confirmation d'email (un compte se crée avec une adresse jetable) → activer la confirmation (native Supabase Auth) ; vérifier les policies RLS sur l'accès Supabase direct ; ajouter les headers de sécurité manquants.
+- **Performance** : le widget Fritzy actuel est lent (pas de cache) ; pages WordPress lourdes (~800 Ko + ~75 scripts) → internaliser un composant optimisé, alléger les assets.
+- **UX** : copy « + de 7 000 cryptomonnaies » inexacte (~100 réels) → corriger.
+- **Produit** (selon la vision produit) : DCA vs achat unique, indicateur de risque, light mode.
 
 → **Détail : [`IMPROVEMENTS.md`](./IMPROVEMENTS.md)**
 
@@ -55,6 +62,14 @@ Le calcul DCA depuis 2018 demande un historique de prix quotidien en EUR.
 - **Fritzy** (le backend de la source) est utilisé **par défaut** : historique complet, sans clé.
 
 L'exactitude des données Fritzy n'a pas été formellement vérifiée, mais l'architecture rend le **changement de source trivial** (abstraction `PriceProvider` : un fichier à ajouter + une variable d'env). Détail : [`docs/donnees.md`](./docs/donnees.md).
+
+---
+
+## Déploiement
+
+Le code est **prêt pour Vercel** (la préférence du brief : import du repo, build `pnpm build`, output `apps/web`). Je l'ai déployé sur **mon propre VPS** parce que mon compte Vercel est déjà occupé par d'autres projets ; avec mon setup (Caddy + CI/CD GitHub Actions), un déploiement se résume à pointer un sous-domaine. J'utilise Vercel en production depuis plusieurs années pour le frontend.
+
+→ **Détail : [`deploy/README.md`](./deploy/README.md)**
 
 ---
 

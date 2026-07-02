@@ -4,26 +4,26 @@ Revue d'optimisation de l'existant (`sinvestir.fr` et `simulateurs.sinvestir.fr`
 
 ## SEO
 
-- **Suite rendue côté client** (`data-ssr="false"`, HTML initial ~4 Ko, aucun JSON-LD), contenu quasi invisible pour un crawler → SSR/prerender (natif Nuxt) + données structurées (`SoftwareApplication`, `FAQPage`).
+- **Suite rendue côté client** (`data-ssr="false"`, HTML initial ~4 Ko, aucun JSON-LD, sitemap vide) : les pages ne captent pas le SEO. Un rendu serveur (SSR/SSG, natif avec Next.js) + données structurées (`SoftwareApplication`, `FAQPage`) les rendraient référençables, ce qui va dans le sens d'une volonté de visibilité (présence YouTube, etc.).
 
 ## SEO-LLM / GEO
 
-- **Le site principal bloque les crawlers IA** dans son `robots.txt` (GPTBot, ClaudeBot, Google-Extended, Applebot-Extended, CCBot, Bytespider, meta-externalagent), donc absent de ChatGPT/Claude/Perplexity et des AI Overviews → réévaluer ce blocage pour être cité sur les requêtes finance.
+- **Le site principal bloque les crawlers IA** dans son `robots.txt` (GPTBot, ClaudeBot, Google-Extended, Applebot-Extended, CCBot, Bytespider, meta-externalagent) : non citable dans ChatGPT, Claude, Perplexity → débloquer et ajouter des données structurées pour être cité sur les requêtes finance.
 
 ## Sécurité
 
-- **Supabase appelé en direct depuis le client** (clé anon publique) : la sécurité repose entièrement sur les policies RLS → auditer que RLS est activé avec des policies par utilisateur sur les tables sensibles ; passer écritures et opérations sensibles par une API/edge function ; ne jamais exposer la `service_role`.
-- **Headers de sécurité absents sur la suite** (CSP, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` ; côté site principal, CSP limitée à `upgrade-insecure-requests`) → les ajouter (config Vercel/Next).
+- **Inscription sans confirmation d'email** : un compte se crée avec une adresse jetable (constaté). Activer la confirmation d'email, qui est un réglage natif de Supabase Auth.
+- **Supabase appelé en direct depuis le client** (clé anon publique) : vérifier que RLS est activé avec des policies par utilisateur sur les tables sensibles, sinon la clé anon permet de lire toutes les lignes via l'endpoint REST.
+- **Headers de sécurité absents sur la suite** (CSP, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`) → les ajouter (config Vercel/Next).
 
 ## Performance
 
+- **Le widget crypto Fritzy est lent** : composant tiers sans cache de la requête d'historique. L'internaliser (ce POC) permet de mettre la donnée en cache et d'optimiser le rendu.
 - **`sinvestir.fr` lourd** : accueil ~800 Ko de HTML + ~75 scripts, page crypto ~560 Ko → optimiser les images, lazy-load, réduire les scripts.
 
 ## UX / UI
 
-- **Page 404 sans habillage** (ni logo, ni navigation, ni liens) → y mettre logo, navigation et liens vers les simulateurs.
 - **Copy « + de 7 000 cryptomonnaies »** sur la page crypto alors que le widget en propose une centaine → corriger le chiffre.
-- **Graphique du widget crypto** : 4 séries écrasées sur un seul axe, illisible → double-axe + plusieurs vues (fait dans ce POC).
 
 ## Produit (selon la vision produit)
 
