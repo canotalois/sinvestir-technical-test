@@ -11,7 +11,6 @@ const BASE =
   "inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-light transition-all duration-[400ms] outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-sky disabled:cursor-not-allowed disabled:opacity-50";
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  // Blue gradient pill; on hover the gradient fades out and a border appears (from S'investir).
   gradient:
     "relative z-0 overflow-hidden border border-transparent text-white before:absolute before:inset-0 before:-z-10 before:bg-gradient-to-r before:from-grad-from before:to-grad-to before:transition-opacity before:duration-[400ms] hover:border-blue-sky/60 hover:before:opacity-0",
   white:

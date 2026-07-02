@@ -4,7 +4,6 @@ import { forwardRef, type InputHTMLAttributes } from "react";
 
 export type InputVariant = "text" | "numeric" | "date";
 
-// Amounts keep digits + separators; "text" keeps everything.
 const NUMERIC_STRIP = /[^\d\s.,]/g;
 
 /**
@@ -25,7 +24,6 @@ export function maskDate(value: string, isDeleting = false): string {
   if (parts.length >= 2) out += `/${month}`;
   if (parts.length >= 3) out += `/${year}`;
 
-  // Auto-advance to the next segment when the current one just filled up.
   if (!isDeleting) {
     if (parts.length === 1 && day.length === 2) out += "/";
     else if (parts.length === 2 && month.length === 2) out += "/";
@@ -65,8 +63,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       onChange={(e) => {
         const raw = e.target.value;
         const native = e.nativeEvent;
-        // A backspace/delete must not auto-insert a slash (that is what makes a
-        // mid-string deletion feel like it "explodes" the field).
         const isDeleting =
           native instanceof InputEvent &&
           (native.inputType?.startsWith("delete") ?? false);

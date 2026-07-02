@@ -365,7 +365,6 @@ export function Shell({ children }: { children: ReactNode }) {
       <div className="relative min-h-dvh">
         <BackgroundGlow />
         <div className="min-h-screen bg-app">
-          {/* Desktop sidebar (collapsible rail) */}
           <div
             className={`hidden transition-all duration-300 lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:flex-col ${
               collapsed ? "lg:w-[88px] lg:p-3" : "lg:w-[300px] lg:p-6"
@@ -377,7 +376,6 @@ export function Shell({ children }: { children: ReactNode }) {
             />
           </div>
 
-          {/* Mobile drawer */}
           {mobileOpen ? (
             <div className="lg:hidden">
               <div
@@ -396,7 +394,6 @@ export function Shell({ children }: { children: ReactNode }) {
               collapsed ? "lg:pl-[88px]" : "lg:pl-[300px]"
             }`}
           >
-            {/* Pinned header (does not follow scroll) */}
             <header className="sticky top-0 z-40 flex h-20 shrink-0 items-center gap-x-4 border-b border-white/10 bg-app/80 px-4 backdrop-blur sm:px-6 lg:px-8">
               <button
                 type="button"

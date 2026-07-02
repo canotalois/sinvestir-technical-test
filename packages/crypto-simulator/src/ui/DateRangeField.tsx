@@ -98,8 +98,6 @@ export function DateRangeField({
 }: DateRangeFieldProps) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<Field>("from");
-  // True only between the start click and the end click, so hovering the
-  // calendar previews an end date only while actively picking one.
   const [picking, setPicking] = useState(false);
   const [hovered, setHovered] = useState<Date | null>(null);
   const [draftFrom, setDraftFrom] = useState<string | null>(null);
@@ -116,8 +114,6 @@ export function DateRangeField({
   const fromDate = ymdToDate(from);
   const toDate = ymdToDate(to);
 
-  // Range shown in the calendar: while actively picking the end, preview up to
-  // the hovered day (Airbnb-style); otherwise always the committed range.
   let selected: DateRange | undefined;
   if (picking && fromDate && hovered) {
     selected =
@@ -141,8 +137,6 @@ export function DateRangeField({
     goToMonth(field === "from" ? from : to);
   }
 
-  // Manual typing: commit and navigate the calendar live once a full valid
-  // date is entered, so the two stay perfectly in sync.
   function handleTyped(field: Field, text: string) {
     if (field === "from") setDraftFrom(text);
     else setDraftTo(text);
@@ -166,7 +160,6 @@ export function DateRangeField({
     setOpen(false);
   }
 
-  // Drive start → end ourselves so the first click never completes the range.
   function handleDayClick(day: Date) {
     setHovered(null);
     const ymd = dateToYmd(day);

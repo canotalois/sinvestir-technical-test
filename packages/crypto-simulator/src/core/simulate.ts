@@ -88,8 +88,6 @@ export function simulate(input: SimulationInput): SimulationResult {
     );
   }
 
-  // Time series: one point per day of data within [from, to],
-  // accumulating buys over time (cumulative totals in Decimal).
   const series: SeriesPoint[] = [];
   let buyIdx = 0;
   let cumInvested = new Decimal(0);

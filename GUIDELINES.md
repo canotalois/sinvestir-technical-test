@@ -78,6 +78,13 @@ En cas de doute : **throw early, type strictly, trust the layer below.** Pas de 
 - ❌ Jamais crasher sur une entrée mal formée : les parsers renvoient `NaN`/`null` (pas de `throw`), l'UI affiche un message. Un `ErrorBoundary` racine catche le reste.
 - ✅ Vérifie **en live dans le navigateur** : zéro shift, flicker, flash, ni donnée périmée.
 
+## Commentaires
+
+- ❌ Pas de commentaire narratif en plein milieu du code (`// on fait X puis Y` au-dessus d'une ligne). Le code se lit seul : nommage explicite, petites fonctions.
+- ❌ Pas de commentaire qui paraphrase la ligne d'en dessous.
+- ✅ Une explication va en **JSDoc au-dessus** d'une fonction, d'un type ou d'une constante, quand le *pourquoi* n'est pas évident.
+- ✅ Un commentaire inline seulement si c'est vraiment tricky ou indéductible du code (workaround, piège navigateur, invariant non local).
+
 ## Tests
 
 - ❌ Pas seulement le happy path. Teste le comportement subtil (one-shot vs DCA, stablecoin ~0 %, date avant l'existence de l'actif, période < 1 fréquence).

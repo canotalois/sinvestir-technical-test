@@ -86,7 +86,6 @@ export function CryptoSimulator({
     clientOptions,
   );
 
-  // Fall back to the first available coin if the default id didn't match.
   useEffect(() => {
     if (coinsState.status === "ready" && coinId === "") {
       const first = coinsState.coins[0]?.id;
@@ -108,8 +107,6 @@ export function CryptoSimulator({
     if (!Number.isFinite(fromTs) || !Number.isFinite(toTs) || fromTs > toTs) {
       return { result: null, dataError: null };
     }
-    // Out-of-range amount: the form shows the floating error, so don't compute a
-    // result at all (mirrors the bad-date branch above).
     if (!(amount > 0) || amount > MAX_AMOUNT) {
       return { result: null, dataError: null };
     }
@@ -145,17 +142,12 @@ export function CryptoSimulator({
         : null;
   const result = computed.result;
   const periodsText = result ? periodsLabel(frequency, result.periods) : null;
-  // Earliest date with price data for the selected asset (drives the date
-  // picker's "Max" preset and disables days before the asset existed).
   const minDate =
     historyState.status === "ready" && historyState.prices[0] !== undefined
       ? toDateInputValue(historyState.prices[0].t)
       : undefined;
-  // Show skeletons on the first load, or when switching coins takes >200 ms
-  // (a cached switch keeps the previous values on screen and swaps instantly).
   const showSkeleton = historyState.status === "loading" || historyLoading;
 
-  // Capture the off-screen share card as PNG, then download it (from the modal).
   async function downloadResultsImage() {
     const node = shareRef.current;
     if (node === null) return;
@@ -333,7 +325,6 @@ export function CryptoSimulator({
           onDownloadImage={downloadResultsImage}
         />
 
-        {/* Off-screen branded card captured as PNG on download. */}
         {result ? (
           <div
             aria-hidden="true"

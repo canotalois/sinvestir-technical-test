@@ -71,7 +71,6 @@ export function Combobox({
       : options;
   }, [options, query]);
 
-  // Keep the highlighted row scrolled into view.
   useEffect(() => {
     if (!open) return;
     const node = listRef.current?.children[active];

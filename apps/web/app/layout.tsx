@@ -10,9 +10,6 @@ const lexend = Lexend({
   display: "swap",
 });
 
-// SEO calqué sur le vrai site (simulateurs.sinvestir.fr) : même suffixe de
-// marque, favicon SVG, structure Open Graph / Twitter. Contenu adapté à cette
-// page (le simulateur crypto DCA) plutôt qu'au hub complet.
 const TITLE = "Simulateur crypto DCA | S'investir Simulateurs";
 const DESCRIPTION =
   "Simulez ce qu'un investissement programmé (DCA) ou un achat unique en bitcoin, ethereum ou une autre crypto aurait rapporté, à partir des prix de marché réels. Outil gratuit et interactif, aux couleurs de la suite S'investir.";

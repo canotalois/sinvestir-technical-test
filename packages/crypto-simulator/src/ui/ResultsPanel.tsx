@@ -69,7 +69,6 @@ function Value({
   children: ReactNode;
   unit?: string;
   big?: boolean;
-  /** Full value, shown on hover when the displayed number is compacted/truncated. */
   title?: string;
 }) {
   return (
@@ -96,7 +95,6 @@ const dash = (
 function InvestedGainBar({ result }: { result: SimulationResult }) {
   const gain = result.gain;
   const hasGain = gain >= 0;
-  // Full track (gold = gain) + blue « investi » pill on top, like S'investir.
   const goldWidth = hasGain && result.finalValue > 0 ? 100 : 0;
   const blueWidth = hasGain
     ? result.finalValue > 0

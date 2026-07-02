@@ -16,9 +16,6 @@ export const simulationSchema = z
     amount: z
       .number({ invalid_type_error: "Saisissez un montant." })
       .positive("Le montant doit être supérieur à 0.")
-      // A per-contribution ceiling: keeps the simulation in a real-world range
-      // (a billion euros per versement is already absurd) and stops astronomical
-      // inputs from producing 30-digit results.
       .max(MAX_AMOUNT, "Montant trop élevé (max 1 000 000 000 €)."),
     frequency: z.enum(["once", "daily", "weekly", "monthly"]),
     from: z.string(),
