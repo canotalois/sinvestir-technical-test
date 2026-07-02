@@ -75,6 +75,26 @@ describe("fetchPriceHistory", () => {
     ]);
   });
 
+  it("sorts points by ascending timestamp (providers sometimes return one out of order)", async () => {
+    server.use(
+      http.get(`${BASE}/coins/bitcoin/history`, () =>
+        HttpResponse.json({
+          prices: [
+            [1_577_836_800_000, 100],
+            [1_735_344_000_000, 300], // 2024-12-28, out of order
+            [1_724_803_200_000, 200], // 2024-08-28, should come before the line above
+          ],
+        }),
+      ),
+    );
+
+    const points = await fetchPriceHistory("bitcoin", { baseUrl: BASE });
+
+    expect(points.map((p) => p.t)).toEqual([
+      1_577_836_800_000, 1_724_803_200_000, 1_735_344_000_000,
+    ]);
+  });
+
   it("throws SHAPE_MISMATCH when 'prices' is missing", async () => {
     server.use(
       http.get(`${BASE}/coins/bitcoin/history`, () =>

@@ -92,7 +92,7 @@ export function CryptoSimulator({
 
   // Field-level problems (bad amount/dates) are shown by the form's floating
   // errors, so `computed` only surfaces DATA problems (no history / no buy in
-  // range) — never a shifting banner for validation.
+  // range) - never a shifting banner for validation.
   const computed = useMemo<{
     result: SimulationResult | null;
     dataError: string | null;
@@ -254,7 +254,7 @@ export function CryptoSimulator({
         </div>
 
         <section className="mt-14" aria-label="Évolution de l'investissement">
-          {/* Tabs — height reserved so results never push the chart down on load. */}
+          {/* Tabs - height reserved so results never push the chart down on load. */}
           <div className="mb-8 flex min-h-[60px] items-center justify-center">
             {result && !showSkeleton ? (
               <ViewTabs value={view} onChange={setView} />

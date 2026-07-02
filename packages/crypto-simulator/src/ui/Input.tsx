@@ -27,7 +27,7 @@ interface InputProps extends Omit<
 }
 
 /**
- * Text input that only accepts characters relevant to its variant — a letter
+ * Text input that only accepts characters relevant to its variant - a letter
  * typed (or pasted) into a `date`/`numeric` field is dropped before it reaches
  * the value. Everything else is a plain `<input>` (styling via `className`).
  */

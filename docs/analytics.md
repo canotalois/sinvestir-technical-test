@@ -4,7 +4,7 @@ Analytics produit via **PostHog**, initialisé dans `app/providers.tsx`. Le traf
 
 | Variable                   | Défaut                     | Rôle                                  |
 | -------------------------- | -------------------------- | ------------------------------------- |
-| `NEXT_PUBLIC_POSTHOG_KEY`  | —                          | clé projet PostHog (publique, `phc_`) |
+| `NEXT_PUBLIC_POSTHOG_KEY`  | -                          | clé projet PostHog (publique, `phc_`) |
 | `NEXT_PUBLIC_POSTHOG_HOST` | `https://eu.i.posthog.com` | host d'ingestion (EU / US)            |
 
 Copier `apps/web/.env.example` → `apps/web/.env.local` et renseigner la clé.

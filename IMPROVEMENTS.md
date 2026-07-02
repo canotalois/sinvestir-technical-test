@@ -1,38 +1,40 @@
-# Backlog d'améliorations (phase 2)
+# Améliorations & suggestions pour S'investir
 
-Périmètre **volontairement écarté de la phase 1** (reproduction fidèle). Trié par rapport valeur/effort.
+Revue d'optimisation de l'existant (`sinvestir.fr` et `simulateurs.sinvestir.fr`). Format : problème constaté → suggestion.
 
-## Produit / UX
+## SEO
 
-- [x] **Vue « Calendrier »** (livré) : table année/mois des versements cumulés, unités acquises et valeur.
-- [ ] **DCA vs achat unique en surimpression** : comparer les deux stratégies sur la même période (message pédagogique fort).
-- [ ] **Sensibilité au timing** : « et si vous aviez commencé X mois plus tôt/tard ? » en un clic.
-- [ ] **PRU vs prix actuel** (badge) + **drawdown max** sur la période (pédagogie du risque crypto).
-- [ ] **Sélecteur de plage temporelle (brush)** sous le graphique, comme la source Fritzy.
-- [x] **Recherche dans le sélecteur d'actifs** (livré : combobox filtrable, clavier ↑/↓/Entrée) ; reste : icônes des coins.
-- [ ] **Boutons « Enregistrer / Partager »** branchés sur les comptes de la suite (Supabase) — aujourd'hui hors périmètre composant.
+- **Suite rendue côté client** (`data-ssr="false"`, HTML initial ~4 Ko, aucun JSON-LD), contenu quasi invisible pour un crawler → SSR/prerender (natif Nuxt) + données structurées (`SoftwareApplication`, `FAQPage`).
+- **Soft-404 sur `/les-simulateurs/crypto`** (HTTP 200 renvoyant une page « 404 » client) → servir un vrai statut 404, ou la page.
 
-## Graphique
+## SEO-LLM / GEO
 
-- [x] **Sélecteur de type de graphique** (livré : Courbe / Aire / Barres / Donut).
-- [x] **Double-axe + séries désactivables** via la légende (livré) ; reste : bascule unités/€.
-- [x] **Légende interactive** (livré) ; reste : tooltips enrichis (variation %, date exacte).
+- **Le site principal bloque les crawlers IA** dans son `robots.txt` (GPTBot, ClaudeBot, Google-Extended, Applebot-Extended, CCBot, Bytespider, meta-externalagent), donc absent de ChatGPT/Claude/Perplexity et des AI Overviews → réévaluer ce blocage pour être cité sur les requêtes finance.
+- **Aucun contenu citable côté suite** (SPA vide, pas de JSON-LD, pas de `llms.txt` réel) → le SSR et les données structurées rendent les simulateurs référençables et citables.
 
-## Données / fiabilité
+## Sécurité
 
-- [ ] **Provider payant** : ajouter `CoinMarketCap` ($79/mois, EUR natif, historique 2013+) ou activer `CoinGecko Analyst` ($129/mois) pour s'affranchir du proxy Fritzy. L'abstraction `PriceProvider` est déjà en place : un seul fichier à ajouter + `CRYPTO_DATA_PROVIDER=…`.
-- [ ] **Repli FX gratuit** : Binance klines (USDT) + conversion EUR/USD (série BCE) en région Vercel EU.
-- [ ] Persistance/cache long terme des séries (Supabase / KV) pour réduire les appels upstream.
+- **Supabase appelé en direct depuis le client** (clé anon publique) : la sécurité repose entièrement sur les policies RLS → auditer que RLS est activé avec des policies par utilisateur sur les tables sensibles ; passer écritures et opérations sensibles par une API/edge function ; ne jamais exposer la `service_role`.
+- **Headers de sécurité absents sur la suite** (CSP, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` ; côté site principal, CSP limitée à `upgrade-insecure-requests`) → les ajouter (config Vercel/Next).
 
-## Qualité / tech
+## Performance
 
-- [ ] **Tests de rendu** du composant (Testing Library) : états loading/error, recalcul sur changement d'input.
-- [ ] **Passe accessibilité** : focus visible, navigation clavier du dropdown, `aria-live` sur les KPI.
-- [ ] **i18n EN/FR** (la source Fritzy est bilingue ; `ember-intl` côté source).
-- [ ] **Build de publication** du package (`tsup`) + types `.d.ts` pour un vrai `npm publish` (aujourd'hui consommé en TS source via `transpilePackages`).
-- [ ] **Web Component** wrapper pour un embed framework-agnostic (zéro dépendance hôte).
-- [ ] ESLint flat config + CI (lint/typecheck/test sur PR).
+- **`sinvestir.fr` lourd** : accueil ~800 Ko de HTML + ~75 scripts, page crypto ~560 Ko → optimiser les images, lazy-load, réduire les scripts.
+- **Suite sans SSR** : écran blanc avant le chargement du JS → le SSR améliore aussi la performance perçue.
 
-## SEO (si intégré à la suite Nuxt)
+## UX / UI
 
-- [ ] Métadonnées / OpenGraph par simulateur, SSR des pages (gros volume de recherche « simulateur crypto »).
+- **Page 404 sans habillage** (ni logo, ni navigation, ni liens) → y mettre logo, navigation et liens vers les simulateurs.
+- **Copy « + de 7 000 cryptomonnaies »** sur la page crypto alors que le widget en propose une centaine → corriger le chiffre.
+- **Graphique du widget crypto** : 4 séries écrasées sur un seul axe, illisible → double-axe + plusieurs vues (fait dans ce POC).
+
+## Produit (selon la vision produit)
+
+- DCA vs achat unique sur la même période.
+- Indicateur de risque : drawdown, prix de revient vs prix actuel.
+- Curseur de timing, sélecteur de plage (brush).
+- Light mode en plus du dark.
+
+## Déjà livré dans ce POC
+
+- Recherche d'actif (combobox), vue Calendrier, 4 graphiques lisibles (double-axe + légende masquable), tri de l'historique de prix, never-crash, zéro layout shift.

@@ -67,7 +67,7 @@ export const coingeckoProvider: PriceProvider = {
     // maximum allowed window to keep the demo working (documented degradation).
     if (res.status === 401) {
       console.warn(
-        "[coingecko] history > 365d refused (key required) — falling back to days=365",
+        "[coingecko] history > 365d refused (key required) - falling back to days=365",
       );
       res = await fetch(buildUrl("365"), {
         headers: headers(),

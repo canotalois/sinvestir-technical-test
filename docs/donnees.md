@@ -16,8 +16,8 @@ Le calcul DCA depuis 2018 nécessite un **historique de prix quotidien en EUR**.
 | Variable                   | Défaut   | Rôle                                                              |
 | -------------------------- | -------- | ----------------------------------------------------------------- |
 | `CRYPTO_DATA_PROVIDER`     | `fritzy` | `fritzy` \| `coingecko`                                           |
-| `COINGECKO_API_KEY`        | —        | débloque le full history sur le provider `coingecko`              |
-| `NEXT_PUBLIC_POSTHOG_KEY`  | —        | analytics PostHog (optionnel, cf. [analytics.md](./analytics.md)) |
+| `COINGECKO_API_KEY`        | -        | débloque le full history sur le provider `coingecko`              |
+| `NEXT_PUBLIC_POSTHOG_KEY`  | -        | analytics PostHog (optionnel, cf. [analytics.md](./analytics.md)) |
 | `NEXT_PUBLIC_POSTHOG_HOST` | EU       | host PostHog (EU / US)                                            |
 
 Aucune variable n'est requise pour lancer la démo en local (le provider Fritzy par défaut ne nécessite pas de clé).

@@ -95,7 +95,7 @@ export function ViewCalendarIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-/** Information icon « ⓘ » (outline) reproduced 1:1 — banner & tooltip chip. */
+/** Information icon « ⓘ » (outline) reproduced 1:1 - banner & tooltip chip. */
 export function InfoIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -193,6 +193,49 @@ export function CloseIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base} width={24} height={24} strokeWidth={1.8} {...props}>
       <path d="M6 6l12 12M18 6L6 18" />
+    </svg>
+  );
+}
+
+/** Chart-type glyphs for the Courbe / Aire / Barres / Donut sub-selector. */
+export function LineChartIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M3 3v18h18" />
+      <path d="M6 14l4-4 3 2 5-6" />
+    </svg>
+  );
+}
+
+export function AreaChartIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M3 3v18h18" />
+      <path
+        d="M6 15l4-4 3 2 5-6v9H6z"
+        fill="currentColor"
+        fillOpacity={0.25}
+        stroke="none"
+      />
+      <path d="M6 15l4-4 3 2 5-6" />
+    </svg>
+  );
+}
+
+export function BarChartIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M3 3v18h18" />
+      <path d="M8 21v-6M13 21V9M18 21v-9" />
+    </svg>
+  );
+}
+
+export function DoughnutIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="12" cy="12" r="8" />
+      <circle cx="12" cy="12" r="3.2" />
     </svg>
   );
 }

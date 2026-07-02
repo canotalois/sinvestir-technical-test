@@ -45,7 +45,7 @@ function SearchIcon() {
   );
 }
 
-/** Searchable select (combobox) built on Radix Popover — same glassy styling as
+/** Searchable select (combobox) built on Radix Popover - same glassy styling as
  *  `Select`, plus a filter input and ↑/↓/Enter keyboard navigation. Used for the
  *  asset picker (top 100 coins), where a plain select is unusable. */
 export function Combobox({

@@ -67,5 +67,11 @@ export async function fetchPriceHistory(
       },
     );
   }
-  return parsed.data.prices.map(([t, price]) => ({ t, price }));
+  // Enforce the ascending-`t` contract at the boundary: providers occasionally
+  // return a point out of order (observed a single 2024 point on BTC), which
+  // makes the chart line back-track and breaks the `priceAtOrBefore` binary
+  // search. Sorting here guarantees a monotonic series everywhere downstream.
+  return parsed.data.prices
+    .map(([t, price]) => ({ t, price }))
+    .sort((a, b) => a.t - b.t);
 }

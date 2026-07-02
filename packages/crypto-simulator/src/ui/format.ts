@@ -53,7 +53,7 @@ export function parseAmountInput(raw: string): number {
   return cleaned === "" ? Number.NaN : Number(cleaned);
 }
 
-/** Crypto units with their symbol (e.g. "0,79400746 BTC") — tooltip usage (full precision). */
+/** Crypto units with their symbol (e.g. "0,79400746 BTC") - tooltip usage (full precision). */
 export function formatUnits(value: number, symbol: string): string {
   return `${unitsFmt.format(value)} ${symbol.toUpperCase()}`;
 }

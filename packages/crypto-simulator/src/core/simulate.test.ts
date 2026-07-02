@@ -23,7 +23,7 @@ function codeOf(fn: () => unknown): SimulationErrorCode | string {
   return "no-throw";
 }
 
-describe("simulate — single contribution", () => {
+describe("simulate - single contribution", () => {
   it("buys once at the starting price and values at the final price", () => {
     const prices = daily([10, 20, 40]);
     const r = simulate({
@@ -43,7 +43,7 @@ describe("simulate — single contribution", () => {
   });
 });
 
-describe("simulate — DCA", () => {
+describe("simulate - DCA", () => {
   it("accumulates more units when the price is low (daily DCA)", () => {
     const prices = daily([10, 20, 40]);
     const r = simulate({
@@ -94,7 +94,7 @@ describe("simulate — DCA", () => {
   });
 });
 
-describe("simulate — decimal precision (decimal.js)", () => {
+describe("simulate - decimal precision (decimal.js)", () => {
   it("avoids floating-point drift on accumulations (0.1 × 3 = 0.3 exact)", () => {
     const prices = daily([1, 1, 1]);
     const r = simulate({
@@ -126,7 +126,7 @@ describe("simulate — decimal precision (decimal.js)", () => {
   });
 });
 
-describe("simulate — bounds & missing data", () => {
+describe("simulate - bounds & missing data", () => {
   it("ignores scheduled contributions before the first price data point", () => {
     const prices = daily([10, 20]); // starts at D0
     const r = simulate({
@@ -157,7 +157,7 @@ describe("simulate — bounds & missing data", () => {
   });
 });
 
-describe("simulate — invalid inputs", () => {
+describe("simulate - invalid inputs", () => {
   it("throws INVALID_AMOUNT on a non strictly positive amount", () => {
     const prices = daily([10]);
     expect(
@@ -227,7 +227,7 @@ describe("simulate — invalid inputs", () => {
   });
 });
 
-describe("simulate — time series", () => {
+describe("simulate - time series", () => {
   it("produces a daily series whose last point matches the aggregates", () => {
     const prices = daily([10, 20, 40]);
     const r = simulate({

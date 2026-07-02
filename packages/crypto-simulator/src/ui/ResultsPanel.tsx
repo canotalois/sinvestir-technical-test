@@ -82,7 +82,7 @@ function Value({
 
 const dash = (
   <div className="mt-auto flex flex-wrap items-baseline gap-1.5">
-    <span className={`${CARD_VALUE} opacity-40`}>—</span>
+    <span className={`${CARD_VALUE} opacity-40`}>-</span>
   </div>
 );
 
@@ -151,7 +151,7 @@ function Summary({
       <strong>{formatDateLong(from)}</strong> et le{" "}
       <strong>{formatDateLong(to)}</strong>, vous auriez investi{" "}
       <strong>{formatEur(result.invested)}</strong> au total pour une valeur de{" "}
-      <strong>{formatEur(result.finalValue)}</strong> — soit une performance de{" "}
+      <strong>{formatEur(result.finalValue)}</strong>, soit une performance de{" "}
       <strong>{formatPct(result.performancePct)}</strong>.
     </p>
   );
@@ -263,7 +263,7 @@ export function ResultsPanel(props: ResultsPanelProps) {
         <Card
           label={
             periodsText !== null
-              ? `Total investi · ${periodsText}`
+              ? `Total investi sur ${periodsText}`
               : "Total investi"
           }
         >

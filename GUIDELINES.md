@@ -1,4 +1,4 @@
-# GUIDELINES.md — Simulateur crypto S'investir
+# GUIDELINES.md - Simulateur crypto S'investir
 
 Checklist courte. Chaque ligne `❌` est un **don't** = bloquant. Si tu te surprends à le faire, stoppe et reconsidère avant de commit.
 
