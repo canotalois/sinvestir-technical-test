@@ -249,6 +249,7 @@ export function DateRangeField({
           <button
             type="button"
             aria-label="Ouvrir le calendrier"
+            title="Ouvrir le calendrier"
             disabled={disabled}
             className="shrink-0 text-blue-light transition-colors hover:text-blue-sky disabled:opacity-55"
             onClick={() => fromRef.current?.focus()}

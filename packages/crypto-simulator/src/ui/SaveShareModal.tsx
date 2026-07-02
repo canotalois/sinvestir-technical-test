@@ -28,7 +28,7 @@ interface SaveShareModalProps {
 }
 
 const FIELD =
-  "w-full rounded-2xl border border-white/10 bg-white/[0.02] px-5 py-4 text-base text-white outline-none transition-colors placeholder:text-blue-light/50 focus:border-blue-sky";
+  "h-[52px] w-full rounded-lg border border-blue-sky/25 bg-blue-sky/5 px-[18px] text-sm text-white outline-none transition-colors placeholder:text-blue-light/60 focus:border-blue-sky";
 
 function readSims(): unknown[] {
   try {
@@ -98,12 +98,12 @@ export function SaveShareModal({
       }}
     >
       <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm" />
+        <DialogPrimitive.Overlay className="si-modal-overlay fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm" />
         <DialogPrimitive.Content
           aria-describedby={undefined}
-          className="fixed left-1/2 top-1/2 z-[60] w-full max-w-xl -translate-x-1/2 -translate-y-1/2 rounded-3xl border border-white/10 bg-modal p-8 shadow-2xl sm:p-10"
+          className="si-modal-content fixed left-1/2 top-1/2 z-[60] w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-lg border border-blue-sky/10 bg-blue-sky/5 p-6 shadow-2xl backdrop-blur-3xl"
         >
-          <DialogPrimitive.Title className="text-center text-2xl font-bold text-white sm:text-3xl">
+          <DialogPrimitive.Title className="text-center text-xl font-normal text-white">
             {scene === "save"
               ? "Enregistrer votre simulation"
               : "Partager ma simulation"}
@@ -118,10 +118,10 @@ export function SaveShareModal({
 
           {scene === "save" ? (
             <>
-              <div className="mt-6 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.02] px-5 py-4 text-sm font-light text-blue-light">
+              <div className="mt-6 flex items-center gap-2 rounded-lg border border-blue-sky/30 bg-blue-sky/10 px-3 py-3 text-xs font-light text-blue-light">
                 <InfoIcon
-                  width={18}
-                  height={18}
+                  width={14}
+                  height={14}
                   className="shrink-0 text-blue-light"
                 />
                 Sauvegarder votre simulation pour la partager
@@ -137,16 +137,16 @@ export function SaveShareModal({
                 placeholder="Nom de ma simulation"
                 className={`mt-4 ${FIELD}`}
               />
-              <div className="mt-6 flex gap-4">
+              <div className="mt-6 flex gap-3">
                 <Button
                   variant="outline"
-                  className="flex-1 py-3.5"
+                  className="flex-1 !text-xs"
                   onClick={onClose}
                 >
                   Annuler
                 </Button>
                 <Button
-                  className="flex-1 py-3.5"
+                  className="flex-1 !text-xs"
                   onClick={handleSave}
                   disabled={name.trim() === ""}
                   icon={<BookmarkPlusIcon />}
@@ -164,16 +164,16 @@ export function SaveShareModal({
                 onFocus={(e) => e.currentTarget.select()}
                 className={`mt-6 ${FIELD} text-blue-light`}
               />
-              <div className="mt-6 flex gap-4">
+              <div className="mt-6 flex gap-3">
                 <Button
-                  className="flex-1 py-3.5"
+                  className="flex-1 !text-xs"
                   onClick={handleCopy}
                   icon={<ShareIcon />}
                 >
                   {copied ? "Lien copié ✓" : "Copier le lien"}
                 </Button>
                 <Button
-                  className="flex-1 py-3.5"
+                  className="flex-1 !text-xs"
                   onClick={() => void onDownloadImage()}
                   icon={<DownloadIcon />}
                 >

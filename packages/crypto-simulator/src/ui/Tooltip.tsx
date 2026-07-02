@@ -37,14 +37,14 @@ export function Tooltip({ text }: { text: string }) {
           side="top"
           sideOffset={8}
           collisionPadding={8}
-          className="z-50 w-max max-w-xs rounded-tr-card rounded-bl-card border border-blue-sky/10 bg-blue-sky/5 p-4 text-xs font-light text-white backdrop-blur-3xl"
+          className="z-50 flex w-max max-w-xs items-center gap-2.5 rounded-tr-card rounded-bl-card border border-blue-sky/10 bg-blue-sky/5 p-4 text-xs font-light text-white backdrop-blur-3xl"
         >
           <InfoIcon
             width={24}
             height={24}
-            className="mb-2 rounded-full bg-blue-sky/10 p-1 text-blue-sky"
+            className="shrink-0 rounded-full bg-blue-sky/10 p-1 text-blue-sky"
           />
-          <span className="block leading-snug">{text}</span>
+          <span className="leading-snug">{text}</span>
         </TooltipPrimitive.Content>
       </TooltipPrimitive.Portal>
     </TooltipPrimitive.Root>

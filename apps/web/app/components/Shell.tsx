@@ -218,7 +218,7 @@ function SidebarInner({
   }`;
 
   return (
-    <>
+    <div className="relative flex grow flex-col">
       <div
         className="relative flex grow flex-col gap-y-10 overflow-y-auto overflow-x-hidden rounded-2xl border border-white/10 px-0 py-6"
         style={{
@@ -325,12 +325,13 @@ function SidebarInner({
           type="button"
           onClick={onCollapse}
           aria-label={collapsed ? "Déplier le menu" : "Réduire le menu"}
-          className="absolute -right-0 top-1/2 z-20 flex h-16 w-6 -translate-y-1/2 items-center justify-center rounded-r-2xl bg-white/5 transition-all duration-[400ms] hover:bg-white/10"
+          title={collapsed ? "Déplier le menu" : "Réduire le menu"}
+          className="absolute left-full top-1/2 z-20 flex h-16 w-6 -translate-y-1/2 items-center justify-center rounded-r-2xl bg-white/5 transition-all duration-[400ms] hover:bg-white/10"
         >
           <ChevronLeftIcon flipped={collapsed} />
         </button>
       ) : null}
-    </>
+    </div>
   );
 }
 

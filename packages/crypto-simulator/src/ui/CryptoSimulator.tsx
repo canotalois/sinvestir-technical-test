@@ -38,7 +38,7 @@ export interface CryptoSimulatorProps {
 
 const RULE =
   "h-0.5 w-[clamp(28px,6vw,50px)] rounded-[2px] bg-gradient-to-r from-blue-sky/0 to-blue-sky/85";
-const TUTO_URL = "https://www.youtube.com/@sinvestir";
+const TUTO_URL = "https://www.youtube.com/watch?v=TbKgV8mZvOE";
 
 export function CryptoSimulator({
   apiBaseUrl,
