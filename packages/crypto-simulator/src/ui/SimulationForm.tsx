@@ -1,6 +1,7 @@
 import { Controller, type Control, type FieldErrors } from "react-hook-form";
 import { Field } from "./Field";
 import { Select } from "./Select";
+import { Combobox } from "./Combobox";
 import { AmountInput } from "./AmountInput";
 import { DateRangeField } from "./DateRangeField";
 import { FREQUENCY_LABELS } from "./format";
@@ -49,12 +50,13 @@ export function SimulationForm({
           name="coinId"
           control={control}
           render={({ field }) => (
-            <Select
+            <Combobox
               value={field.value}
               options={coinOptions}
               onChange={field.onChange}
               ariaLabel="Actif numérique"
               placeholder="Choisir un actif"
+              searchPlaceholder="Rechercher une crypto…"
               loading={disabled}
               disabled={disabled || coins.length === 0}
             />

@@ -20,6 +20,37 @@ export function TooltipProvider({ children }: { children: ReactNode }) {
  * and a ⓘ chip above the text. Positioning, focus and dismissal are handled by
  * Radix; the trigger colour stays static (`#7899CE`, no hover shift).
  */
+/**
+ * Lightweight label tooltip for icon-only buttons (no ⓘ icon): a small, light,
+ * on-brand box that just describes the control on hover/focus. Used for the
+ * collapsed sidebar items, the collapse handle, the calendar button, etc.
+ */
+export function LabelTooltip({
+  label,
+  side = "right",
+  children,
+}: {
+  readonly label: string;
+  readonly side?: "top" | "right" | "bottom" | "left";
+  readonly children: ReactNode;
+}) {
+  return (
+    <TooltipPrimitive.Root>
+      <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
+      <TooltipPrimitive.Portal>
+        <TooltipPrimitive.Content
+          side={side}
+          sideOffset={10}
+          collisionPadding={8}
+          className="z-[70] rounded-lg border border-blue-sky/10 bg-blue-sky/5 px-2.5 py-1.5 text-xs font-light text-white shadow-lg backdrop-blur-3xl"
+        >
+          {label}
+        </TooltipPrimitive.Content>
+      </TooltipPrimitive.Portal>
+    </TooltipPrimitive.Root>
+  );
+}
+
 export function Tooltip({ text }: { text: string }) {
   return (
     <TooltipPrimitive.Root>

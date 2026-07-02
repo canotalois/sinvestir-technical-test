@@ -9,7 +9,7 @@ Périmètre **volontairement écarté de la phase 1** (reproduction fidèle). Tr
 - [ ] **Sensibilité au timing** : « et si vous aviez commencé X mois plus tôt/tard ? » en un clic.
 - [ ] **PRU vs prix actuel** (badge) + **drawdown max** sur la période (pédagogie du risque crypto).
 - [ ] **Sélecteur de plage temporelle (brush)** sous le graphique, comme la source Fritzy.
-- [ ] **Recherche dans le sélecteur d'actifs** + icônes des coins (la source a un dropdown recherchable).
+- [x] **Recherche dans le sélecteur d'actifs** (livré : combobox filtrable, clavier ↑/↓/Entrée) ; reste : icônes des coins.
 - [ ] **Boutons « Enregistrer / Partager »** branchés sur les comptes de la suite (Supabase) — aujourd'hui hors périmètre composant.
 
 ## Graphique

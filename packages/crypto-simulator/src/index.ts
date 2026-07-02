@@ -1,5 +1,6 @@
 export { CryptoSimulator } from "./ui/CryptoSimulator";
 export type { CryptoSimulatorProps } from "./ui/CryptoSimulator";
+export { TooltipProvider, LabelTooltip } from "./ui/Tooltip";
 
 export { simulate } from "./core/simulate";
 export { summarizeByYear, type YearSummary } from "./core/yearly";

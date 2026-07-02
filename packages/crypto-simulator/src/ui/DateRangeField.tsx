@@ -11,6 +11,7 @@ import { fr } from "react-day-picker/locale";
 import "react-day-picker/style.css";
 import { fromDateInputValue, formatDateShort } from "./format";
 import { Input } from "./Input";
+import { LabelTooltip } from "./Tooltip";
 import { ViewCalendarIcon } from "./icons";
 
 interface DateRangeFieldProps {
@@ -246,16 +247,17 @@ export function DateRangeField({
               onBlur={() => handleBlur("to")}
             />
           </div>
-          <button
-            type="button"
-            aria-label="Ouvrir le calendrier"
-            title="Ouvrir le calendrier"
-            disabled={disabled}
-            className="shrink-0 text-blue-light transition-colors hover:text-blue-sky disabled:opacity-55"
-            onClick={() => fromRef.current?.focus()}
-          >
-            <ViewCalendarIcon className="h-5 w-5" />
-          </button>
+          <LabelTooltip label="Ouvrir le calendrier" side="top">
+            <button
+              type="button"
+              aria-label="Ouvrir le calendrier"
+              disabled={disabled}
+              className="shrink-0 text-blue-light transition-colors hover:text-blue-sky disabled:opacity-55"
+              onClick={() => fromRef.current?.focus()}
+            >
+              <ViewCalendarIcon className="h-5 w-5" />
+            </button>
+          </LabelTooltip>
         </div>
       </Popover.Anchor>
 

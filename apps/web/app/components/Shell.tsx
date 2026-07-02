@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { ReactNode, SVGProps } from "react";
+import { TooltipProvider, LabelTooltip } from "@sinvestir/crypto-simulator";
 import { BackgroundGlow } from "./BackgroundGlow";
 import { ErrorBoundary } from "./ErrorBoundary";
 
@@ -206,6 +207,24 @@ function BrandLogo() {
   );
 }
 
+/** Wraps an icon-only control in a label tooltip only when the sidebar is
+ *  collapsed (expanded items already show their text). */
+function TipIf({
+  show,
+  label,
+  children,
+}: {
+  readonly show: boolean;
+  readonly label: string;
+  readonly children: ReactNode;
+}) {
+  return show ? (
+    <LabelTooltip label={label}>{children}</LabelTooltip>
+  ) : (
+    children
+  );
+}
+
 function SidebarInner({
   collapsed = false,
   onCollapse,
@@ -253,18 +272,22 @@ function SidebarInner({
               <ul role="list" className="space-y-3">
                 {NAV.map((item) => (
                   <li key={item.label}>
-                    <a
-                      href={item.href}
-                      title={collapsed ? item.label : undefined}
-                      className={navItemClass(item.active === true, collapsed)}
-                    >
-                      {item.icon}
-                      {collapsed ? null : (
-                        <span className="overflow-hidden text-ellipsis">
-                          {item.label}
-                        </span>
-                      )}
-                    </a>
+                    <TipIf show={collapsed} label={item.label}>
+                      <a
+                        href={item.href}
+                        className={navItemClass(
+                          item.active === true,
+                          collapsed,
+                        )}
+                      >
+                        {item.icon}
+                        {collapsed ? null : (
+                          <span className="overflow-hidden text-ellipsis">
+                            {item.label}
+                          </span>
+                        )}
+                      </a>
+                    </TipIf>
                   </li>
                 ))}
               </ul>
@@ -273,45 +296,42 @@ function SidebarInner({
             <li>
               <ul role="list" className="space-y-1">
                 <li>
-                  <button
-                    type="button"
-                    className={secondaryBtn}
-                    title={collapsed ? "Gérer mon compte" : undefined}
-                  >
-                    <GearIcon />
-                    {collapsed ? null : (
-                      <span className="overflow-hidden text-ellipsis">
-                        Gérer mon compte
-                      </span>
-                    )}
-                  </button>
+                  <TipIf show={collapsed} label="Gérer mon compte">
+                    <button type="button" className={secondaryBtn}>
+                      <GearIcon />
+                      {collapsed ? null : (
+                        <span className="overflow-hidden text-ellipsis">
+                          Gérer mon compte
+                        </span>
+                      )}
+                    </button>
+                  </TipIf>
                 </li>
                 <li className="!mt-0">
-                  <button
-                    type="button"
-                    className={secondaryBtn}
-                    title={collapsed ? "Faire une suggestion" : undefined}
-                  >
-                    <BulbIcon />
-                    {collapsed ? null : (
-                      <span className="overflow-hidden text-ellipsis">
-                        Faire une suggestion
-                      </span>
-                    )}
-                  </button>
+                  <TipIf show={collapsed} label="Faire une suggestion">
+                    <button type="button" className={secondaryBtn}>
+                      <BulbIcon />
+                      {collapsed ? null : (
+                        <span className="overflow-hidden text-ellipsis">
+                          Faire une suggestion
+                        </span>
+                      )}
+                    </button>
+                  </TipIf>
                 </li>
                 <li className="!mt-0">
                   <div className={collapsed ? "px-2" : "px-6"}>
-                    <button
-                      type="button"
-                      title={collapsed ? "Déconnexion" : undefined}
-                      className={`relative z-0 inline-flex items-center justify-center gap-2 overflow-hidden rounded-full border border-transparent text-[14px] font-light text-white outline-none transition-all duration-[400ms] before:absolute before:inset-0 before:-z-10 before:bg-gradient-to-r before:from-grad-from before:to-grad-to before:transition-opacity before:duration-[400ms] hover:border-blue-sky/60 hover:before:opacity-0 ${
-                        collapsed ? "mx-auto h-11 w-11" : "w-full px-6 py-3"
-                      }`}
-                    >
-                      <LogoutIcon />
-                      {collapsed ? null : "Déconnexion"}
-                    </button>
+                    <TipIf show={collapsed} label="Déconnexion">
+                      <button
+                        type="button"
+                        className={`relative z-0 inline-flex items-center justify-center gap-2 overflow-hidden rounded-full border border-transparent text-[14px] font-light text-white outline-none transition-all duration-[400ms] before:absolute before:inset-0 before:-z-10 before:bg-gradient-to-r before:from-grad-from before:to-grad-to before:transition-opacity before:duration-[400ms] hover:border-blue-sky/60 hover:before:opacity-0 ${
+                          collapsed ? "mx-auto h-11 w-11" : "w-full px-6 py-3"
+                        }`}
+                      >
+                        <LogoutIcon />
+                        {collapsed ? null : "Déconnexion"}
+                      </button>
+                    </TipIf>
                   </div>
                 </li>
               </ul>
@@ -321,15 +341,16 @@ function SidebarInner({
       </div>
 
       {onCollapse !== undefined ? (
-        <button
-          type="button"
-          onClick={onCollapse}
-          aria-label={collapsed ? "Déplier le menu" : "Réduire le menu"}
-          title={collapsed ? "Déplier le menu" : "Réduire le menu"}
-          className="absolute left-full top-1/2 z-20 flex h-16 w-6 -translate-y-1/2 items-center justify-center rounded-r-2xl bg-white/5 transition-all duration-[400ms] hover:bg-white/10"
-        >
-          <ChevronLeftIcon flipped={collapsed} />
-        </button>
+        <LabelTooltip label={collapsed ? "Déplier le menu" : "Réduire le menu"}>
+          <button
+            type="button"
+            onClick={onCollapse}
+            aria-label={collapsed ? "Déplier le menu" : "Réduire le menu"}
+            className="absolute left-full top-1/2 z-20 flex h-16 w-6 -translate-y-1/2 items-center justify-center rounded-r-2xl bg-white/5 transition-all duration-[400ms] hover:bg-white/10"
+          >
+            <ChevronLeftIcon flipped={collapsed} />
+          </button>
+        </LabelTooltip>
       ) : null}
     </div>
   );
@@ -340,68 +361,70 @@ export function Shell({ children }: { children: ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="relative min-h-dvh">
-      <BackgroundGlow />
-      <div className="min-h-screen bg-app">
-        {/* Desktop sidebar (collapsible rail) */}
-        <div
-          className={`hidden transition-all duration-300 lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:flex-col ${
-            collapsed ? "lg:w-[88px] lg:p-3" : "lg:w-[300px] lg:p-6"
-          }`}
-        >
-          <SidebarInner
-            collapsed={collapsed}
-            onCollapse={() => setCollapsed((v) => !v)}
-          />
-        </div>
-
-        {/* Mobile drawer */}
-        {mobileOpen ? (
-          <div className="lg:hidden">
-            <div
-              className="fixed inset-0 z-50 bg-black/60"
-              onClick={() => setMobileOpen(false)}
-              aria-hidden="true"
+    <TooltipProvider>
+      <div className="relative min-h-dvh">
+        <BackgroundGlow />
+        <div className="min-h-screen bg-app">
+          {/* Desktop sidebar (collapsible rail) */}
+          <div
+            className={`hidden transition-all duration-300 lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:flex-col ${
+              collapsed ? "lg:w-[88px] lg:p-3" : "lg:w-[300px] lg:p-6"
+            }`}
+          >
+            <SidebarInner
+              collapsed={collapsed}
+              onCollapse={() => setCollapsed((v) => !v)}
             />
-            <div className="fixed inset-y-0 left-0 z-50 flex w-[280px] max-w-[85vw] flex-col bg-app p-4">
-              <SidebarInner />
-            </div>
           </div>
-        ) : null}
 
-        <div
-          className={`mx-auto max-w-[1800px] transition-all duration-300 ${
-            collapsed ? "lg:pl-[88px]" : "lg:pl-[300px]"
-          }`}
-        >
-          {/* Pinned header (does not follow scroll) */}
-          <header className="sticky top-0 z-40 flex h-20 shrink-0 items-center gap-x-4 border-b border-white/10 bg-app/80 px-4 backdrop-blur sm:px-6 lg:px-8">
-            <button
-              type="button"
-              onClick={() => setMobileOpen(true)}
-              className="flex items-center justify-center p-2.5 text-white lg:hidden"
-            >
-              <span className="sr-only">Ouvrir le menu</span>
-              <MenuIcon />
-            </button>
-            <div className="flex w-full items-center justify-between gap-x-4">
-              <BrandLogo />
-              <a
-                href="https://www.sinvestir.fr"
-                target="_blank"
-                rel="noreferrer"
-                className="hidden whitespace-nowrap text-sm text-white hover:text-white/70 sm:block"
-              >
-                Découvrir S&apos;investir →
-              </a>
+          {/* Mobile drawer */}
+          {mobileOpen ? (
+            <div className="lg:hidden">
+              <div
+                className="fixed inset-0 z-50 bg-black/60"
+                onClick={() => setMobileOpen(false)}
+                aria-hidden="true"
+              />
+              <div className="fixed inset-y-0 left-0 z-50 flex w-[280px] max-w-[85vw] flex-col bg-app p-4">
+                <SidebarInner />
+              </div>
             </div>
-          </header>
+          ) : null}
 
-          <main className="px-4 pb-10 pt-6 sm:px-6 sm:py-10 lg:px-8">
-            <ErrorBoundary>{children}</ErrorBoundary>
-          </main>
+          <div
+            className={`mx-auto max-w-[1800px] transition-all duration-300 ${
+              collapsed ? "lg:pl-[88px]" : "lg:pl-[300px]"
+            }`}
+          >
+            {/* Pinned header (does not follow scroll) */}
+            <header className="sticky top-0 z-40 flex h-20 shrink-0 items-center gap-x-4 border-b border-white/10 bg-app/80 px-4 backdrop-blur sm:px-6 lg:px-8">
+              <button
+                type="button"
+                onClick={() => setMobileOpen(true)}
+                className="flex items-center justify-center p-2.5 text-white lg:hidden"
+              >
+                <span className="sr-only">Ouvrir le menu</span>
+                <MenuIcon />
+              </button>
+              <div className="flex w-full items-center justify-between gap-x-4">
+                <BrandLogo />
+                <a
+                  href="https://www.sinvestir.fr"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hidden whitespace-nowrap text-sm text-white hover:text-white/70 sm:block"
+                >
+                  Découvrir S&apos;investir →
+                </a>
+              </div>
+            </header>
+
+            <main className="px-4 pb-10 pt-6 sm:px-6 sm:py-10 lg:px-8">
+              <ErrorBoundary>{children}</ErrorBoundary>
+            </main>
+          </div>
         </div>
       </div>
-    </div>
+    </TooltipProvider>
   );
 }

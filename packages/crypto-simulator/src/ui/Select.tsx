@@ -20,13 +20,13 @@ interface SelectProps {
   readonly loading?: boolean;
 }
 
-const TRIGGER =
+export const TRIGGER =
   "flex w-full cursor-pointer items-center justify-between gap-3 border-0 border-b border-blue-light/30 bg-transparent py-2 text-left text-[20px] font-light text-white outline-none transition-colors data-[state=open]:border-blue-sky disabled:cursor-default disabled:text-white/55 [&[data-state=open]_.cs-chevron]:rotate-180";
-const ITEM =
+export const ITEM =
   "group flex w-full cursor-pointer items-center gap-3 rounded-lg border-0 bg-transparent px-3 py-2 text-left text-sm font-light text-white outline-none transition-colors data-[highlighted]:bg-white/[0.06] data-[state=checked]:text-blue-sky";
 
 /** Subtle « glass » shadow for the menu (inner top border + depth). */
-const MENU_SHADOW = {
+export const MENU_SHADOW = {
   boxShadow:
     "inset 0 1px 0 0 rgb(255 255 255 / 0.06), 0 0 0 1px rgb(0 0 0 / 0.05), 0 20px 25px -5px rgb(0 0 0 / 0.35), 0 8px 10px -6px rgb(0 0 0 / 0.3)",
 } as const;
