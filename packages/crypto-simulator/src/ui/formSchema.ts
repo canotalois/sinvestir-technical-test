@@ -1,6 +1,9 @@
 import { z } from "zod";
 import { fromDateInputValue, toDateInputValue } from "./format";
 
+/** Highest amount accepted per contribution (a generous real-world ceiling). */
+export const MAX_AMOUNT = 1_000_000_000;
+
 /**
  * Validates the simulation form inputs. Each issue's `path` maps to a field so
  * the error can be shown floating next to that field (no layout shift).
@@ -12,7 +15,11 @@ export const simulationSchema = z
     // with a friendly French one instead of the raw "Expected number…".
     amount: z
       .number({ invalid_type_error: "Saisissez un montant." })
-      .positive("Le montant doit être supérieur à 0."),
+      .positive("Le montant doit être supérieur à 0.")
+      // A per-contribution ceiling: keeps the simulation in a real-world range
+      // (a billion euros per versement is already absurd) and stops astronomical
+      // inputs from producing 30-digit results.
+      .max(MAX_AMOUNT, "Montant trop élevé (max 1 000 000 000 €)."),
     frequency: z.enum(["once", "daily", "weekly", "monthly"]),
     from: z.string(),
     to: z.string(),

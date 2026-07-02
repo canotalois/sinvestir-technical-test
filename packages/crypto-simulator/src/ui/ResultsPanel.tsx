@@ -7,6 +7,7 @@ import { SURFACE } from "./styles";
 import {
   formatEur,
   formatAmount,
+  formatAmountFull,
   formatUnitsNumber,
   formatPct,
   formatPctValue,
@@ -34,7 +35,7 @@ const CARD = `@container flex flex-col gap-3 min-h-[152px] p-6 ${SURFACE}`;
 // Number size indexed on the card width (cqi) → never overflows,
 // the unit stays on the same line; capped at the recorded sizes (30px / 41,6px).
 const CARD_VALUE =
-  "text-[clamp(1.125rem,9cqi,1.875rem)] font-normal leading-[1.05] tabular-nums [overflow-wrap:anywhere]";
+  "text-[clamp(1.125rem,9cqi,1.875rem)] font-normal leading-[1.05] tabular-nums";
 const CARD_VALUE_BIG = `${CARD_VALUE} text-[clamp(1.5rem,13cqi,2.6rem)]`;
 
 function Card({
@@ -63,18 +64,24 @@ function Value({
   children,
   unit,
   big,
+  title,
 }: {
   children: ReactNode;
   unit?: string;
   big?: boolean;
+  /** Full value, shown on hover when the displayed number is compacted/truncated. */
+  title?: string;
 }) {
   return (
-    <div className="mt-auto flex min-w-0 flex-wrap items-baseline gap-1.5">
-      <span className={big === true ? CARD_VALUE_BIG : CARD_VALUE}>
+    <div className="mt-auto flex min-w-0 items-baseline gap-1.5">
+      <span
+        className={`min-w-0 truncate ${big === true ? CARD_VALUE_BIG : CARD_VALUE}`}
+        title={title}
+      >
         {children}
       </span>
       {unit !== undefined ? (
-        <span className="text-sm font-normal text-white">{unit}</span>
+        <span className="shrink-0 text-sm font-normal text-white">{unit}</span>
       ) : null}
     </div>
   );
@@ -101,14 +108,17 @@ function InvestedGainBar({ result }: { result: SimulationResult }) {
 
   return (
     <div>
-      <div className="mt-4 flex flex-wrap justify-between gap-4 text-xs font-light">
-        <span className="text-blue-sky">
+      <div className="mt-4 flex justify-between gap-4 text-xs font-light">
+        <span className="min-w-0 truncate text-blue-sky" title={formatEur(result.invested)}>
           Investi
           <span className="ml-1.5 text-sm font-bold">
             {formatEur(result.invested)}
           </span>
         </span>
-        <span className={hasGain ? "text-yellow" : "text-negative"}>
+        <span
+          className={`min-w-0 truncate ${hasGain ? "text-yellow" : "text-negative"}`}
+          title={formatEur(gain)}
+        >
           {hasGain ? "Plus-value" : "Moins-value"}
           <span className="ml-1.5 text-sm font-bold">{formatEur(gain)}</span>
         </span>
@@ -197,7 +207,9 @@ export function ResultsPanel(props: ResultsPanelProps) {
           {loading ? (
             <Skeleton className="mt-auto h-[30px] w-[70%]" />
           ) : result ? (
-            <Value unit="EUR">{formatAmount(result.finalValue)}</Value>
+            <Value unit="EUR" title={formatAmountFull(result.finalValue)}>
+              {formatAmount(result.finalValue)}
+            </Value>
           ) : (
             dash
           )}
@@ -221,11 +233,11 @@ export function ResultsPanel(props: ResultsPanelProps) {
           {loading ? (
             <Skeleton className="mt-auto h-[42px] w-[70%]" />
           ) : result ? (
-            <div className="mt-auto flex min-w-0 flex-wrap items-baseline gap-1.5">
-              <span className={`${CARD_VALUE_BIG} ${perfClass}`}>
+            <div className="mt-auto flex min-w-0 items-baseline gap-1.5">
+              <span className={`min-w-0 truncate ${CARD_VALUE_BIG} ${perfClass}`}>
                 {formatPctValue(result.performancePct)}
               </span>
-              <span className="text-sm font-normal text-white">%</span>
+              <span className="shrink-0 text-sm font-normal text-white">%</span>
             </div>
           ) : (
             dash
@@ -239,7 +251,10 @@ export function ResultsPanel(props: ResultsPanelProps) {
           {loading ? (
             <Skeleton className="mt-auto h-[30px] w-[80%]" />
           ) : result ? (
-            <Value unit={symbol.toUpperCase()}>
+            <Value
+              unit={symbol.toUpperCase()}
+              title={formatUnitsNumber(result.units)}
+            >
               {formatUnitsNumber(result.units)}
             </Value>
           ) : (
@@ -254,7 +269,9 @@ export function ResultsPanel(props: ResultsPanelProps) {
           {loading ? (
             <Skeleton className="mt-auto h-[30px] w-[80%]" />
           ) : result ? (
-            <Value unit="EUR">{formatAmount(result.averagePrice)}</Value>
+            <Value unit="EUR" title={formatAmountFull(result.averagePrice)}>
+              {formatAmount(result.averagePrice)}
+            </Value>
           ) : (
             dash
           )}
@@ -270,7 +287,9 @@ export function ResultsPanel(props: ResultsPanelProps) {
           {loading ? (
             <Skeleton className="mt-auto h-[30px] w-[80%]" />
           ) : result ? (
-            <Value unit="EUR">{formatAmount(result.invested)}</Value>
+            <Value unit="EUR" title={formatAmountFull(result.invested)}>
+              {formatAmount(result.invested)}
+            </Value>
           ) : (
             dash
           )}

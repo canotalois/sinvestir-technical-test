@@ -4,12 +4,34 @@ import { forwardRef, type InputHTMLAttributes } from "react";
 
 export type InputVariant = "text" | "numeric" | "date";
 
-// Characters stripped out per variant (kept: digits + separators for amounts,
-// digits + "/" for dates). "text" keeps everything.
-const STRIP: Record<Exclude<InputVariant, "text">, RegExp> = {
-  numeric: /[^\d\s.,]/g,
-  date: /[^\d/]/g,
-};
+// Amounts keep digits + separators; "text" keeps everything.
+const NUMERIC_STRIP = /[^\d\s.,]/g;
+
+/**
+ * "dd/mm/yyyy" mask that caps each segment (2 day, 2 month, 4 year) without
+ * ever shifting digits across the slashes. It keeps the slashes the user
+ * already has instead of re-deriving from a digit run, so deleting a digit in
+ * the middle stays put ("01/05/2013" minus the "5" → "01/0/2013", not a
+ * cascading "01/02/013"). While typing forward, a slash is auto-inserted once a
+ * segment fills, so the user never has to type them; on delete nothing is added.
+ */
+export function maskDate(value: string, isDeleting = false): string {
+  const parts = value.replace(/[^\d/]/g, "").split("/");
+  const day = (parts[0] ?? "").slice(0, 2);
+  const month = (parts[1] ?? "").slice(0, 2);
+  const year = (parts[2] ?? "").slice(0, 4);
+
+  let out = day;
+  if (parts.length >= 2) out += `/${month}`;
+  if (parts.length >= 3) out += `/${year}`;
+
+  // Auto-advance to the next segment when the current one just filled up.
+  if (!isDeleting) {
+    if (parts.length === 1 && day.length === 2) out += "/";
+    else if (parts.length === 2 && month.length === 2) out += "/";
+  }
+  return out;
+}
 
 const INPUT_MODE: Record<InputVariant, "text" | "decimal" | "numeric"> = {
   text: "text",
@@ -42,8 +64,18 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       inputMode={inputMode ?? INPUT_MODE[variant]}
       onChange={(e) => {
         const raw = e.target.value;
+        const native = e.nativeEvent;
+        // A backspace/delete must not auto-insert a slash (that is what makes a
+        // mid-string deletion feel like it "explodes" the field).
+        const isDeleting =
+          native instanceof InputEvent &&
+          (native.inputType?.startsWith("delete") ?? false);
         const cleaned =
-          variant === "text" ? raw : raw.replace(STRIP[variant], "");
+          variant === "date"
+            ? maskDate(raw, isDeleting)
+            : variant === "numeric"
+              ? raw.replace(NUMERIC_STRIP, "")
+              : raw;
         onValueChange?.(cleaned);
       }}
       {...rest}

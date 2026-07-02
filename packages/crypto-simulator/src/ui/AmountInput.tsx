@@ -26,6 +26,9 @@ export function AmountInput({
     <Input
       id={id}
       variant="numeric"
+      // Native backstop against pasted 30-digit nonsense; the real ceiling is
+      // enforced by the schema (MAX_AMOUNT).
+      maxLength={16}
       className={className}
       value={display}
       onFocus={() => setDraft(Number.isFinite(value) ? String(value) : "")}

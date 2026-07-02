@@ -223,6 +223,7 @@ export function DateRangeField({
               variant="date"
               aria-label="Date de début"
               placeholder="jj/mm/aaaa"
+              maxLength={10}
               disabled={disabled}
               className={INPUT}
               value={draftFrom ?? (from === "" ? "" : formatDateShort(from))}
@@ -239,6 +240,7 @@ export function DateRangeField({
               variant="date"
               aria-label="Date de fin"
               placeholder="jj/mm/aaaa"
+              maxLength={10}
               disabled={disabled}
               className={INPUT}
               value={draftTo ?? (to === "" ? "" : formatDateShort(to))}

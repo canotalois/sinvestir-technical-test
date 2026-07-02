@@ -26,6 +26,24 @@ describe("formatAmount", () => {
     expect(s.endsWith("00")).toBe(true);
     expect(s).toContain(",");
   });
+
+  it("switches to compact notation above a billion (keeps the card one line)", () => {
+    // The amount ceiling (MAX_AMOUNT) caps the invested total to a few trillion;
+    // compact renders that as a short "x,y Bn" string, never a 13-digit run.
+    const s = formatAmount(4.4e12);
+    expect(s.length).toBeLessThan(10);
+    expect(s).not.toContain(",00");
+  });
+
+  it("keeps normal grouping for realistic amounts (unchanged behaviour)", () => {
+    expect(formatAmount(41847.23)).toContain("41");
+    expect(formatAmount(41847.23)).toContain(",23");
+  });
+
+  it("returns a dash for non-finite values instead of 'NaN'", () => {
+    expect(formatAmount(Number.POSITIVE_INFINITY)).toBe("-");
+    expect(formatAmount(Number.NaN)).toBe("-");
+  });
 });
 
 describe("formatUnitsNumber", () => {

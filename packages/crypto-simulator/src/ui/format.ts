@@ -17,6 +17,23 @@ const amountFmt = new Intl.NumberFormat("fr-FR", {
   maximumFractionDigits: 2,
 });
 
+/** Above a billion, switch to compact notation ("1,2 Md") so a card value stays
+ *  one short line instead of a 40-digit string. The card also truncates as a
+ *  hard safety net, so the layout can never shift regardless of magnitude. */
+const COMPACT_ABOVE = 1e9;
+
+const eurCompactFmt = new Intl.NumberFormat("fr-FR", {
+  style: "currency",
+  currency: "EUR",
+  notation: "compact",
+  maximumFractionDigits: 1,
+});
+
+const amountCompactFmt = new Intl.NumberFormat("fr-FR", {
+  notation: "compact",
+  maximumFractionDigits: 1,
+});
+
 const pctFmt = new Intl.NumberFormat("fr-FR", {
   maximumFractionDigits: 2,
   signDisplay: "exceptZero",
@@ -29,10 +46,20 @@ function breakableSpaces(formatted: string): string {
 }
 
 export function formatEur(value: number): string {
+  if (!Number.isFinite(value)) return "-";
+  if (Math.abs(value) >= COMPACT_ABOVE) return eurCompactFmt.format(value);
   return eurFmt.format(value);
 }
 
 export function formatAmount(value: number): string {
+  if (!Number.isFinite(value)) return "-";
+  if (Math.abs(value) >= COMPACT_ABOVE) return amountCompactFmt.format(value);
+  return breakableSpaces(amountFmt.format(value));
+}
+
+/** Full precision, no compaction, for a hover title on a truncated card value. */
+export function formatAmountFull(value: number): string {
+  if (!Number.isFinite(value)) return "-";
   return breakableSpaces(amountFmt.format(value));
 }
 

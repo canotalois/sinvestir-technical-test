@@ -4,7 +4,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toPng } from "html-to-image";
-import { simulationSchema, type SimulationFormValues } from "./formSchema";
+import {
+  simulationSchema,
+  MAX_AMOUNT,
+  type SimulationFormValues,
+} from "./formSchema";
 import { SimulationForm } from "./SimulationForm";
 import { ResultsPanel } from "./ResultsPanel";
 import { HistoryChart } from "./HistoryChart";
@@ -102,6 +106,11 @@ export function CryptoSimulator({
     const fromTs = fromDateInputValue(from);
     const toTs = fromDateInputValue(to);
     if (!Number.isFinite(fromTs) || !Number.isFinite(toTs) || fromTs > toTs) {
+      return { result: null, dataError: null };
+    }
+    // Out-of-range amount: the form shows the floating error, so don't compute a
+    // result at all (mirrors the bad-date branch above).
+    if (!(amount > 0) || amount > MAX_AMOUNT) {
       return { result: null, dataError: null };
     }
     try {
