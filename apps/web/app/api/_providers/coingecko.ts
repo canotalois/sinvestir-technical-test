@@ -1,14 +1,15 @@
 import { z } from "zod";
 import {
   ProviderError,
+  chartSchema,
+  COINS_TTL,
+  HISTORY_TTL,
   type PriceProvider,
   type ProviderCoin,
   type ProviderPrice,
 } from "./types";
 
 const BASE = "https://api.coingecko.com/api/v3";
-const COINS_TTL = 3600;
-const HISTORY_TTL = 21_600;
 
 function headers(): Record<string, string> {
   const result: Record<string, string> = { accept: "application/json" };
@@ -25,10 +26,6 @@ const marketsSchema = z.array(
     market_cap_rank: z.number().nullable().optional(),
   }),
 );
-
-const chartSchema = z.object({
-  prices: z.array(z.tuple([z.number(), z.number()])).min(1),
-});
 
 export const coingeckoProvider: PriceProvider = {
   name: "coingecko",

@@ -265,8 +265,11 @@ export function DateRangeField({
           onInteractOutside={(e) => {
             // Keep the calendar open while interacting with the inputs (they
             // live in the anchor, which Radix would otherwise treat as outside).
-            const target = e.target as Node | null;
-            if (target && rootRef.current?.contains(target)) e.preventDefault();
+            if (
+              e.target instanceof Node &&
+              rootRef.current?.contains(e.target)
+            )
+              e.preventDefault();
           }}
           className="z-50 rounded-2xl border border-white/10 bg-white/5 p-3 text-white ring-1 ring-black/5 backdrop-blur-2xl"
         >

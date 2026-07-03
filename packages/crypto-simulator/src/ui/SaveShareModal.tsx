@@ -63,7 +63,7 @@ export function SaveShareModal({
   function handleSave() {
     const trimmed = name.trim();
     if (trimmed === "") return;
-    const id = Math.random().toString(36).slice(2, 14);
+    const id = crypto.randomUUID().slice(0, 12);
     try {
       window.localStorage.setItem(
         "si-crypto-sims",
@@ -72,8 +72,8 @@ export function SaveShareModal({
           { id, name: trimmed, ...sim, savedAt: Date.now() },
         ]),
       );
-    } catch {
-      /* storage unavailable (private mode): continue, the link stays shareable */
+    } catch (err) {
+      console.warn("Could not persist the simulation to localStorage", err);
     }
     const origin = window.location.origin;
     setShareUrl(`${origin}/share/crypto?share_id=${id}`);
@@ -85,8 +85,8 @@ export function SaveShareModal({
     navigator.clipboard
       .writeText(shareUrl)
       .then(() => setCopied(true))
-      .catch(() => {
-        /* clipboard unavailable: ignore */
+      .catch((err) => {
+        console.warn("Could not copy the link to the clipboard", err);
       });
   }
 

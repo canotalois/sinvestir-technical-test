@@ -1,6 +1,9 @@
 import { z } from "zod";
 import {
   ProviderError,
+  chartSchema,
+  COINS_TTL,
+  HISTORY_TTL,
   type PriceProvider,
   type ProviderCoin,
   type ProviderPrice,
@@ -9,8 +12,6 @@ import {
 // Backend of the original simulator (CoinGecko proxy cached by Fritzy):
 // serves the full daily history (since 2013) in EUR, without a key.
 const BASE = "https://digital-assets.fritzy.finance";
-const COINS_TTL = 3600;
-const HISTORY_TTL = 21_600;
 
 const marketsSchema = z.array(
   z.object({
@@ -20,10 +21,6 @@ const marketsSchema = z.array(
     marketCapRank: z.number().nullable().optional(),
   }),
 );
-
-const chartSchema = z.object({
-  prices: z.array(z.tuple([z.number(), z.number()])).min(1),
-});
 
 export const fritzyProvider: PriceProvider = {
   name: "fritzy",

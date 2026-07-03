@@ -1,4 +1,5 @@
 import { formatEur } from "./format";
+import { signClass } from "./styles";
 
 function Stat({
   label,
@@ -40,7 +41,7 @@ export function StatsRow({
       <Stat
         label="Plus-value"
         value={formatEur(gain)}
-        className={gain >= 0 ? "text-positive" : "text-negative"}
+        className={signClass(gain)}
       />
       <Stat label="Total investi" value={formatEur(invested)} />
     </div>

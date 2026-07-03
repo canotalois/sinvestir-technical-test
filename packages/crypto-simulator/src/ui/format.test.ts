@@ -51,6 +51,12 @@ describe("formatUnitsNumber", () => {
     expect(formatUnitsNumber(0.79448843)).toBe("0,794488");
     expect(formatUnitsNumber(2)).toBe("2");
   });
+
+  it("compacts a cheap token's billions of units onto one line", () => {
+    const s = formatUnitsNumber(94_673_451_500);
+    expect(s.length).toBeLessThan(10);
+    expect(s).not.toContain("451");
+  });
 });
 
 describe("formatPctValue", () => {

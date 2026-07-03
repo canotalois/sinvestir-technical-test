@@ -113,8 +113,13 @@ export function simulate(input: SimulationInput): SimulationResult {
 
   const invested = amountDec.times(buys.length);
   const units = buys.reduce((sum, b) => sum.plus(b.units), new Decimal(0));
-  const lastPoint = prices[prices.length - 1];
-  const finalPrice = priceAtOrBefore(prices, to) ?? lastPoint?.price ?? 0;
+  const finalPrice = priceAtOrBefore(prices, to);
+  if (finalPrice === null) {
+    throw new SimulationError(
+      "NO_PRICE_DATA",
+      "Aucune donnée de prix disponible.",
+    );
+  }
   const finalValue = units.times(finalPrice);
   const gain = finalValue.minus(invested);
   const averagePrice = units.isZero() ? new Decimal(0) : invested.div(units);

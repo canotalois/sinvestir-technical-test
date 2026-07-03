@@ -1,5 +1,14 @@
 /** Abstraction over the price data source (CoinGecko, Fritzy, …). */
 
+import { z } from "zod";
+
+export const COINS_TTL = 3600;
+export const HISTORY_TTL = 21_600;
+
+export const chartSchema = z.object({
+  prices: z.array(z.tuple([z.number(), z.number()])).min(1),
+});
+
 export interface ProviderCoin {
   readonly id: string;
   readonly symbol: string;

@@ -3,12 +3,13 @@ import { Tooltip } from "./Tooltip";
 import { Button } from "./Button";
 import { PlayCircleIcon } from "./icons";
 import { Skeleton } from "./Skeleton";
-import { SURFACE } from "./styles";
+import { SURFACE, signClass } from "./styles";
 import {
   formatEur,
   formatAmount,
   formatAmountFull,
   formatUnitsNumber,
+  formatUnitsFull,
   formatPct,
   formatPctValue,
   formatDateLong,
@@ -167,12 +168,7 @@ function Summary({
 
 export function ResultsPanel(props: ResultsPanelProps) {
   const { result, loading, symbol, periodsText, tutoUrl, dateLabel } = props;
-  const perfClass =
-    result === null
-      ? ""
-      : result.performancePct >= 0
-        ? "text-positive"
-        : "text-negative";
+  const perfClass = result === null ? "" : signClass(result.performancePct);
 
   return (
     <section className="min-w-0" aria-label="Vos résultats">
@@ -251,7 +247,7 @@ export function ResultsPanel(props: ResultsPanelProps) {
           ) : result ? (
             <Value
               unit={symbol.toUpperCase()}
-              title={formatUnitsNumber(result.units)}
+              title={formatUnitsFull(result.units)}
             >
               {formatUnitsNumber(result.units)}
             </Value>

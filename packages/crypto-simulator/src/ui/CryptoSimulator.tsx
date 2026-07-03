@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toPng } from "html-to-image";
+import { exportNodeToPng } from "./exportImage";
 import {
   simulationSchema,
   MAX_AMOUNT,
@@ -152,20 +152,7 @@ export function CryptoSimulator({
     const node = shareRef.current;
     if (node === null) return;
     try {
-      const backgroundColor = getComputedStyle(document.documentElement)
-        .getPropertyValue("--color-app")
-        .trim();
-      const dataUrl = await toPng(node, {
-        pixelRatio: 2,
-        cacheBust: true,
-        filter: (el) =>
-          !(el instanceof HTMLElement && el.dataset.shareHide === "true"),
-        ...(backgroundColor !== "" ? { backgroundColor } : {}),
-      });
-      const link = document.createElement("a");
-      link.href = dataUrl;
-      link.download = `simulation-${coinId}.png`;
-      link.click();
+      await exportNodeToPng(node, `simulation-${coinId}.png`);
     } catch (err) {
       console.warn("Could not generate the share image", err);
     }

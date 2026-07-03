@@ -1,6 +1,6 @@
 import { summarizeByYear } from "../core/yearly";
 import { formatAmount, formatUnitsNumber, formatPctValue } from "./format";
-import { SURFACE } from "./styles";
+import { SURFACE, signClass } from "./styles";
 import type { SeriesPoint } from "../core/types";
 
 const TH = "px-5 py-4 font-light text-blue-light";
@@ -44,7 +44,7 @@ export function CalendarTable({
                 {formatAmount(row.value)} €
               </td>
               <td
-                className={`${TD} text-right ${row.performancePct >= 0 ? "text-positive" : "text-negative"}`}
+                className={`${TD} text-right ${signClass(row.performancePct)}`}
               >
                 {formatPctValue(row.performancePct)} %
               </td>
