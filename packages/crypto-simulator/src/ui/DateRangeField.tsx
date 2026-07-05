@@ -12,6 +12,7 @@ import "react-day-picker/style.css";
 import { fromDateInputValue, formatDateShort } from "./format";
 import { Input } from "./Input";
 import { LabelTooltip } from "./Tooltip";
+import { useNarrowViewport } from "./useMediaQuery";
 import { ViewCalendarIcon } from "./icons";
 
 interface DateRangeFieldProps {
@@ -105,6 +106,7 @@ export function DateRangeField({
   const [month, setMonth] = useState<Date>(
     () => monthStart(from) ?? monthStart(to) ?? new Date(),
   );
+  const narrow = useNarrowViewport();
 
   const rootRef = useRef<HTMLDivElement>(null);
   const fromRef = useRef<HTMLInputElement>(null);
@@ -247,7 +249,7 @@ export function DateRangeField({
               type="button"
               aria-label="Ouvrir le calendrier"
               disabled={disabled}
-              className="shrink-0 text-blue-light transition-colors hover:text-blue-sky disabled:opacity-55"
+              className="flex shrink-0 items-center justify-center text-blue-light transition-colors hover:text-blue-sky disabled:opacity-55 [@media(pointer:coarse)]:h-11 [@media(pointer:coarse)]:w-11"
               onClick={() => fromRef.current?.focus()}
             >
               <ViewCalendarIcon className="h-5 w-5" />
@@ -260,6 +262,7 @@ export function DateRangeField({
         <Popover.Content
           align="start"
           sideOffset={10}
+          collisionPadding={12}
           onOpenAutoFocus={(e) => e.preventDefault()}
           onMouseLeave={() => setHovered(null)}
           onInteractOutside={(e) => {
@@ -289,7 +292,7 @@ export function DateRangeField({
           <DayPicker
             mode="range"
             locale={fr}
-            numberOfMonths={2}
+            numberOfMonths={narrow ? 1 : 2}
             captionLayout="dropdown"
             month={month}
             onMonthChange={setMonth}

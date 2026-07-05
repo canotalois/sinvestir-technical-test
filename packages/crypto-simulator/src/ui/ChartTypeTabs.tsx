@@ -43,7 +43,7 @@ export function ChartTypeTabs({
             aria-selected={value === o.value}
             aria-label={o.label}
             onClick={() => onChange(o.value)}
-            className={`flex items-center justify-center rounded-full p-2 transition-colors outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-sky ${
+            className={`flex items-center justify-center rounded-full p-2 transition-colors outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-sky [@media(pointer:coarse)]:h-11 [@media(pointer:coarse)]:w-11 ${
               value === o.value
                 ? "bg-white/10 text-white"
                 : "text-blue-light hover:text-white"

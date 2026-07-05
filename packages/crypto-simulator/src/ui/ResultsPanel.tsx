@@ -32,7 +32,7 @@ interface ResultsPanelProps {
   readonly dateLabel?: string;
 }
 
-const CARD = `@container flex flex-col gap-3 min-h-[152px] p-6 ${SURFACE}`;
+const CARD = `@container flex flex-col gap-3 min-h-[152px] p-4 min-[560px]:p-6 ${SURFACE}`;
 // Number size indexed on the card width (cqi) → never overflows,
 // the unit stays on the same line; capped at the recorded sizes (30px / 41,6px).
 const CARD_VALUE =
