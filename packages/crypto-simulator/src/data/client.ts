@@ -45,11 +45,17 @@ export async function fetchCoins(
   return parsed.data;
 }
 
-/** Daily price history (EUR) of a crypto, normalized to `PricePoint[]`. */
+export interface PriceHistory {
+  readonly prices: PricePoint[];
+  /** True when the API served the history from a fallback source (primary down). */
+  readonly degraded: boolean;
+}
+
+/** Daily price history (EUR) of a crypto, normalized and sorted ascending. */
 export async function fetchPriceHistory(
   id: string,
   options: DataClientOptions = {},
-): Promise<PricePoint[]> {
+): Promise<PriceHistory> {
   const { baseUrl, doFetch } = resolve(options);
   const url = `${baseUrl}/coins/${encodeURIComponent(id)}/history`;
   const res = await doFetch(url);
@@ -71,7 +77,8 @@ export async function fetchPriceHistory(
   // return a point out of order (observed a single 2024 point on BTC), which
   // makes the chart line back-track and breaks the `priceAtOrBefore` binary
   // search. Sorting here guarantees a monotonic series everywhere downstream.
-  return parsed.data.prices
+  const prices = parsed.data.prices
     .map(([t, price]) => ({ t, price }))
     .sort((a, b) => a.t - b.t);
+  return { prices, degraded: res.headers.get("x-data-degraded") === "true" };
 }

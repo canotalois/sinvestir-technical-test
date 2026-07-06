@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getProvider } from "../../../_providers";
+import { withFallback } from "../../../_providers";
 import { handleProviderError } from "../../../_providers/httpError";
 
 export const revalidate = 21_600;
@@ -10,8 +10,13 @@ export async function GET(
 ) {
   const { id } = await context.params;
   try {
-    const prices = await getProvider().priceHistory(id);
-    return NextResponse.json({ prices });
+    const { value: prices, degraded } = await withFallback((provider) =>
+      provider.priceHistory(id),
+    );
+    return NextResponse.json(
+      { prices },
+      { headers: { "x-data-degraded": String(degraded) } },
+    );
   } catch (err) {
     return handleProviderError(err);
   }

@@ -67,12 +67,39 @@ describe("fetchPriceHistory", () => {
       ),
     );
 
-    const points = await fetchPriceHistory("bitcoin", { baseUrl: BASE });
+    const { prices } = await fetchPriceHistory("bitcoin", { baseUrl: BASE });
 
-    expect(points).toEqual([
+    expect(prices).toEqual([
       { t: 1_577_836_800_000, price: 6400.12 },
       { t: 1_577_923_200_000, price: 6500.34 },
     ]);
+  });
+
+  it("flags degraded when the API served a fallback source", async () => {
+    server.use(
+      http.get(`${BASE}/coins/bitcoin/history`, () =>
+        HttpResponse.json(
+          { prices: [[1_577_836_800_000, 6400.12]] },
+          { headers: { "x-data-degraded": "true" } },
+        ),
+      ),
+    );
+
+    const result = await fetchPriceHistory("bitcoin", { baseUrl: BASE });
+
+    expect(result.degraded).toBe(true);
+  });
+
+  it("is not degraded by default (primary source)", async () => {
+    server.use(
+      http.get(`${BASE}/coins/bitcoin/history`, () =>
+        HttpResponse.json({ prices: [[1_577_836_800_000, 6400.12]] }),
+      ),
+    );
+
+    const result = await fetchPriceHistory("bitcoin", { baseUrl: BASE });
+
+    expect(result.degraded).toBe(false);
   });
 
   it("sorts points by ascending timestamp (providers sometimes return one out of order)", async () => {
@@ -88,9 +115,9 @@ describe("fetchPriceHistory", () => {
       ),
     );
 
-    const points = await fetchPriceHistory("bitcoin", { baseUrl: BASE });
+    const { prices } = await fetchPriceHistory("bitcoin", { baseUrl: BASE });
 
-    expect(points.map((p) => p.t)).toEqual([
+    expect(prices.map((p) => p.t)).toEqual([
       1_577_836_800_000, 1_724_803_200_000, 1_735_344_000_000,
     ]);
   });

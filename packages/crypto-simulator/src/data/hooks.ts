@@ -17,12 +17,13 @@ export type CoinsState =
 export type HistoryState =
   | { status: "loading" }
   | { status: "error"; message: string }
-  | { status: "ready"; prices: PricePoint[] };
+  | { status: "ready"; prices: PricePoint[]; degraded: boolean };
 
-function messageOf(err: unknown): string {
-  return err instanceof Error
-    ? err.message
-    : "Une erreur inattendue est survenue.";
+/** User-facing message for a data failure. The raw error (status, contract
+ *  mismatch) is logged for debugging, never shown: the UI stays clean. */
+function friendlyError(err: unknown, subject: string): string {
+  console.warn(`[data] échec ${subject}`, err);
+  return "Données de marché momentanément indisponibles. Réessayez dans un instant.";
 }
 
 /** Loads the coin list once (and on `options` change). */
@@ -37,7 +38,11 @@ export function useCoins(options: DataClientOptions): CoinsState {
         if (!cancelled) setState({ status: "ready", coins });
       })
       .catch((err: unknown) => {
-        if (!cancelled) setState({ status: "error", message: messageOf(err) });
+        if (!cancelled)
+          setState({
+            status: "error",
+            message: friendlyError(err, "chargement des cryptos"),
+          });
       });
     return () => {
       cancelled = true;
@@ -67,17 +72,20 @@ export function usePriceHistory(
       if (!cancelled) setLoading(true);
     }, 200);
     fetchPriceHistory(coinId, options)
-      .then((prices) => {
+      .then(({ prices, degraded }) => {
         if (cancelled) return;
         clearTimeout(timer);
         setLoading(false);
-        setState({ status: "ready", prices });
+        setState({ status: "ready", prices, degraded });
       })
       .catch((err: unknown) => {
         if (cancelled) return;
         clearTimeout(timer);
         setLoading(false);
-        setState({ status: "error", message: messageOf(err) });
+        setState({
+          status: "error",
+          message: friendlyError(err, "historique des prix"),
+        });
       });
     return () => {
       cancelled = true;

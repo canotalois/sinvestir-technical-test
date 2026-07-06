@@ -147,6 +147,8 @@ export function CryptoSimulator({
       ? toDateInputValue(historyState.prices[0].t)
       : undefined;
   const showSkeleton = historyState.status === "loading" || historyLoading;
+  const degraded =
+    historyState.status === "ready" && historyState.degraded;
 
   async function downloadResultsImage() {
     const node = shareRef.current;
@@ -196,6 +198,21 @@ export function CryptoSimulator({
             conseil en investissement.
           </p>
         </div>
+
+        {degraded ? (
+          <div
+            role="status"
+            className="mx-auto mb-8 flex max-w-3xl items-start gap-3 rounded-2xl border border-yellow/20 bg-yellow/[0.07] p-4 text-left text-xs font-light text-yellow/90 sm:text-sm"
+          >
+            <InfoIcon className="mt-0.5 h-5 w-5 shrink-0 text-yellow" />
+            <p>
+              Notre source de données habituelle est momentanément
+              indisponible. Les résultats proviennent d&apos;une source de
+              secours gratuite : l&apos;affichage peut être plus lent et
+              l&apos;historique plus court que d&apos;ordinaire.
+            </p>
+          </div>
+        ) : null}
 
         <div className="grid grid-cols-1 items-start gap-8 min-[900px]:grid-cols-[2fr_3fr] min-[900px]:gap-12">
           <div className="min-w-0">
