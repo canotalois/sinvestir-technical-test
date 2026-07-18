@@ -87,7 +87,7 @@ const DATA_START = new Date(2013, 0, 1);
 const INPUT =
   "w-full min-w-0 border-0 bg-transparent py-2 text-[20px] font-light text-white outline-none placeholder:text-blue-light/50";
 const PRESET =
-  "rounded-full border border-white/10 px-3 py-1 text-xs font-light text-white transition-colors hover:border-white/20 hover:bg-white/10";
+  "rounded-full border border-white/10 px-3 py-1 text-xs font-light text-white transition-colors hover:border-white/20 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-white/10 disabled:hover:bg-transparent";
 
 export function DateRangeField({
   from,
@@ -199,6 +199,10 @@ export function DateRangeField({
     { label: "Depuis 2020", from: "2020-01-01" },
     { label: "Max", from: minDate ?? dateToYmd(DATA_START) },
   ];
+  // A preset starting before the first price point is unreachable (the backtest
+  // can't buy before the data window), so disable it rather than let it snap.
+  const presetDisabled = (presetFrom: string) =>
+    minDate !== undefined && presetFrom < minDate;
 
   return (
     <Popover.Root
@@ -268,10 +272,7 @@ export function DateRangeField({
           onInteractOutside={(e) => {
             // Keep the calendar open while interacting with the inputs (they
             // live in the anchor, which Radix would otherwise treat as outside).
-            if (
-              e.target instanceof Node &&
-              rootRef.current?.contains(e.target)
-            )
+            if (e.target instanceof Node && rootRef.current?.contains(e.target))
               e.preventDefault();
           }}
           className="z-50 rounded-2xl border border-white/10 bg-white/5 p-3 text-white ring-1 ring-black/5 backdrop-blur-2xl"
@@ -282,6 +283,7 @@ export function DateRangeField({
                 key={p.label}
                 type="button"
                 className={PRESET}
+                disabled={presetDisabled(p.from)}
                 onClick={() => applyPreset(p.from)}
               >
                 {p.label}
@@ -326,6 +328,12 @@ export function DateRangeField({
               range_end: `${dcn.range_end} rounded-r-full`,
             }}
           />
+
+          {minDate !== undefined ? (
+            <p className="mt-2 border-t border-white/10 pt-2 text-center text-[0.7rem] font-light text-blue-light">
+              Historique disponible depuis le {formatDateShort(minDate)}
+            </p>
+          ) : null}
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>

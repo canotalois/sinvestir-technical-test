@@ -146,9 +146,18 @@ export function CryptoSimulator({
     historyState.status === "ready" && historyState.prices[0] !== undefined
       ? toDateInputValue(historyState.prices[0].t)
       : undefined;
+
+  // Clamp `from` up to the first available price point. Contributions before it
+  // are silently dropped by the backtest, so a `from` earlier than the data
+  // window (2018 while the CoinGecko fallback only serves ~365 days) freezes
+  // "Total investi" and desyncs the shown period from the computed one. ISO
+  // "yyyy-mm-dd" compares chronologically.
+  useEffect(() => {
+    if (minDate === undefined) return;
+    if (from !== "" && from < minDate) setValue("from", minDate);
+  }, [minDate, from, setValue]);
   const showSkeleton = historyState.status === "loading" || historyLoading;
-  const degraded =
-    historyState.status === "ready" && historyState.degraded;
+  const degraded = historyState.status === "ready" && historyState.degraded;
 
   async function downloadResultsImage() {
     const node = shareRef.current;
@@ -206,10 +215,10 @@ export function CryptoSimulator({
           >
             <InfoIcon className="mt-0.5 h-5 w-5 shrink-0 text-yellow" />
             <p>
-              Notre source de données habituelle est momentanément
-              indisponible. Les résultats proviennent d&apos;une source de
-              secours gratuite : l&apos;affichage peut être plus lent et
-              l&apos;historique plus court que d&apos;ordinaire.
+              Notre source de données habituelle est momentanément indisponible.
+              Les résultats proviennent d&apos;une source de secours gratuite :
+              l&apos;affichage peut être plus lent et l&apos;historique plus
+              court que d&apos;ordinaire.
             </p>
           </div>
         ) : null}
